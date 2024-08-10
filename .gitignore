@@ -1,0 +1,5 @@
+# Ignore visual studio directory (.vs/)
+.vs/
+
+# Ignore CodeBlocks Project file (.cbp)
+*.cbp

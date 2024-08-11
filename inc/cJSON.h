@@ -180,6 +180,7 @@ typedef struct cJSON_Dict
  */
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr);
 
+
 /**
  * @brief   Function used to get the data type of the data stored in GOptr.
  * 
@@ -188,6 +189,7 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr);
  * @return  cJSON_Result_t 
  */
 cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
+
 
 /**
  * @brief   Function used to try and retrieve the dictionary object stored in GOptr's dataContainer.
@@ -202,7 +204,7 @@ cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t *GOptr, cJSON_Dict_t *dict);
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
  * @param   list Pointer to a user variable, where the list's contents are to be stored.
- * @return  cJSON_Result_t 
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a list.
  */
 cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t *GOptr, cJSON_List_t *list);
 /**
@@ -210,7 +212,7 @@ cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t *GOptr, cJSON_List_t *list);
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
  * @param   str Pointer to a user variable, where the strings's contents are to be stored.
- * @return  cJSON_Result_t 
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a string.
  */
 cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t *GOptr, cJSON_String_t *str);
 /**
@@ -218,7 +220,7 @@ cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t *GOptr, cJSON_String_t *str);
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
  * @param   intVal Pointer to a user variable, where the integer value is to be stored.
- * @return  cJSON_Result_t 
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a integer.
  */
 cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t *GOptr, cJSON_Int_t *intVal);
 /**
@@ -226,7 +228,7 @@ cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t *GOptr, cJSON_Int_t *intVal);
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
  * @param   floatVal Pointer to a user variable, where the float value is to be stored.
- * @return  cJSON_Result_t 
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a float.
  */
 cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t *GOptr, cJSON_Float_t *floatVal);
 /**
@@ -234,6 +236,56 @@ cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t *GOptr, cJSON_Float_t *floatVal
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
  * @param   boolVal Pointer to a user variable, where the boolean value is to be stored.
- * @return  cJSON_Result_t 
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a boolean.
  */
 cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal);
+
+
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param dictPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a dictionary.
+ */
+cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t *GOptr, cJSON_Dict_t **dictPtr);
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param listPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a list.
+ */
+cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t *GOptr, cJSON_List_t **listPtr);
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param strPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a string.
+ */
+cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t *GOptr, cJSON_String_t *strPtr);
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param intValPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a integer.
+ */
+cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t *GOptr, cJSON_Int_t **intValPtr);
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param floatValPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a float.
+ */
+cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t *GOptr, cJSON_Float_t **floatValPtr);
+/**
+ * @brief 
+ * 
+ * @param GOptr Pointer to a cJSON_Generic_t object.
+ * @param boolValPtr 
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a boolean.
+ */
+cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolValPtr);

@@ -107,11 +107,13 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
     }
 }
 
+
 cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
 {
     *dataType = GOptr->type;
     return cJSON_Ok;
 }
+
 
 cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t *GOptr, cJSON_Dict_t *dict)
 {
@@ -170,6 +172,68 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal)
     if (GOptr->type == Boolean)
     {
         *boolVal = AS_BOOL(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+
+
+cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t *GOptr, cJSON_Dict_t **dictPtr)
+{
+    if (GOptr->type == Dictionary)
+    {
+        *dictPtr = AS_DICT_PTR(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t *GOptr, cJSON_List_t **listPtr)
+{
+    if (GOptr->type == List)
+    {
+        *listPtr = AS_LIST_PTR(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t *GOptr, cJSON_String_t *strPtr)
+{
+    if (GOptr->type == String)
+    {
+        *strPtr = AS_STRING(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t *GOptr, cJSON_Int_t **intValPtr)
+{
+    if (GOptr->type == Integer)
+    {
+        *intValPtr = AS_INT_PTR(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t *GOptr, cJSON_Float_t **floatValPtr)
+{
+    if (GOptr->type == Float)
+    {
+        *floatValPtr = AS_FLOAT_PTR(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolValPtr)
+{
+    if (GOptr->type == Boolean)
+    {
+        *boolValPtr = AS_BOOL_PTR(GOptr);
         return cJSON_Ok;
     }
     

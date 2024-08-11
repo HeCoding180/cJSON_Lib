@@ -16,15 +16,14 @@
  * @param   containerType Specifies the type of the object stored in the generic object.
  * @return  Returns the memory address of a newly allocated cJSON_Generic_t already containing the type and pointer to the object of the specified type.
  */
-cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType);
+cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType);
 
 //   ---   Private Function Implementations   ---
 
-cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType)
+cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
 {
-    cJSON_Generic_t *genObj = (cJSON_Generic_t *)malloc(sizeof(cJSON_Generic_t));
-
-    genObj->type = containerType;
+    cJSON_Generic_t genObj;
+    genObj.type = containerType;
 
     size_t containerSize;
 
@@ -32,7 +31,7 @@ cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType)
     switch(containerType)
     {
     case Null:
-        genObj->dataStruct = NULL;
+        genObj.dataStruct = NULL;
         return genObj;
     case Dictionary:
         containerSize = sizeof(cJSON_Dict_t);
@@ -55,10 +54,10 @@ cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType)
     }
 
     // Allocate memory for data container
-    genObj->dataStruct = malloc(containerSize);
+    genObj.dataStruct = malloc(containerSize);
     
     // Set allocated memory to 0
-    if (genObj->dataStruct != NULL) memset(genObj->dataStruct, 0, containerSize);
+    if (genObj.dataStruct != NULL) memset(genObj.dataStruct, 0, containerSize);
     
     return genObj;
 }

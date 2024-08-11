@@ -14,6 +14,39 @@
 //   ---   Defines   ---
 
 
+//   ---   Macros   ---
+
+/**
+ * @brief   Returns a pointer of type cJSON_Dict_t, pointing to the dataStruct of obj.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_DICT_PTR(obj) ((cJSON_Dict_t*)((obj)->dataStruct))
+/**
+ * @brief   Returns a pointer of type cJSON_List_t, pointing to the dataStruct of obj.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_LIST_PTR(obj) ((cJSON_List_t*)((obj)->dataStruct))
+/**
+ * @brief   Returns obj->dataStruct as a cJSON_String_t.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_STRING(obj) ((cJSON_String_t)((obj)->dataStruct))
+/**
+ * @brief   Returns obj->dataStruct as a cJSON_Int_t.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_INT(obj) (*((cJSON_Int_t*)((obj)->dataStruct)))
+/**
+ * @brief   Returns obj->dataStruct as a cJSON_Float_t.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_FLOAT(obj) (*((cJSON_Float_t*)((obj)->dataStruct)))
+/**
+ * @brief   Returns obj->dataStruct as a cJSON_Bool_t.
+ * @param   obj cJSON_Generic_t pointer.
+ */
+#define AS_BOOL(obj) (*((cJSON_Bool_t*)((obj)->dataStruct)))
+
 //   ---   Typedefs   ---
 
 // Basic Typedefs
@@ -87,7 +120,7 @@ typedef struct cJSON_Generic
 } cJSON_Generic_t;
 
 /**
- * @brief   cJSON data structure for a list object
+ * @brief   cJSON data structure for a list object.
  * 
  */
 typedef struct cJSON_List
@@ -103,7 +136,7 @@ typedef struct cJSON_List
 typedef cJSON_String_t cJSON_Key;
 
 /**
- * @brief   cJSON data container for a dictionary object
+ * @brief   cJSON data container for a dictionary object.
  * 
  */
 typedef struct cJSON_Dict
@@ -113,13 +146,11 @@ typedef struct cJSON_Dict
     cJSON_Generic_t *valueData;
 } cJSON_Dict_t;
 
-//   ---   Function Prototypes   ---
+//   ---   Public Function Prototypes   ---
 
 /**
- * @brief   Function that allocates the required memory for a cJSON_Generic_t object together with its specified data container specified in the containerType parameter.
- * @param   containerType Specifies the type of the object stored in the generic object.
- * @return  Returns the memory address of a newly allocated cJSON_Generic_t already containing the type and pointer to the object of the specified type.
+ * @brief   Function that deletes a generic object together with all of its children (recursive).
+ * @param   GOptr Pointer to the cJSON_Generic_t object that is to be deleted.
+ * @return  cJSON_Result_t deletion result.
  */
-cJSON_Generic_t *cJSON_malloc_generic_object(cJSON_DataType_t containerType);
-
-
+cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr);

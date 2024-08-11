@@ -16,15 +16,11 @@
  * @param   containerType Specifies the type of the object stored in the generic object.
  * @return  Returns the memory address of a newly allocated cJSON_Generic_t already containing the type and pointer to the object of the specified type.
  */
-cJSON_Generic_t *cJSON_malloc_generic_object(cJSON_DataType_t containerType);
-
-//   ---   Public Function Prototypes   ---
-
-
+cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType);
 
 //   ---   Private Function Implementations   ---
 
-cJSON_Generic_t *cJSON_malloc_generic_object(cJSON_DataType_t containerType)
+cJSON_Generic_t *cJSON_mallocGenObj(cJSON_DataType_t containerType)
 {
     cJSON_Generic_t *genObj = (cJSON_Generic_t *)malloc(sizeof(cJSON_Generic_t));
 
@@ -35,6 +31,9 @@ cJSON_Generic_t *cJSON_malloc_generic_object(cJSON_DataType_t containerType)
     // Select container pointer size
     switch(containerType)
     {
+    case Null:
+        genObj->dataStruct = NULL;
+        return genObj;
     case Dictionary:
         containerSize = sizeof(cJSON_Dict_t);
         break;
@@ -65,3 +64,46 @@ cJSON_Generic_t *cJSON_malloc_generic_object(cJSON_DataType_t containerType)
 }
 
 //   ---   Public Function Implementations   ---
+
+cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
+{
+    // Check if object is already deleted.
+    if (GOptr->dataStruct != NULL)
+    {
+        switch(GOptr->type)
+        {
+        case Dictionary:
+            // Delete all cJSON_Generic_t objects and free the memory of all key strings stored in this cJSON_Dict_t object.
+            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GOptr)->length; i++)
+            {
+                // Free the key string pointer (char**) stored at index i.
+                free(AS_DICT_PTR(GOptr)->keyData[i]);
+                // Delete the cJSON_Generic_t object stored at index i.
+                cJSON_delGenObj(&(AS_DICT_PTR(GOptr)->valueData[i]));
+            }
+
+            // Free the memory of the key and value arrays.
+            free(AS_DICT_PTR(GOptr)->keyData);
+            free(AS_DICT_PTR(GOptr)->valueData);
+
+            // Free the memory of the data container itself.
+            free(GOptr->dataStruct);
+            break;
+        case List:
+            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GOptr)->length; i++)
+            {
+                // Delete the cJSON_Generic_t object stored at index i
+                cJSON_delGenObj(&(AS_LIST_PTR(GOptr)->data[i]));
+            }
+
+            // Free the memory of the data container itself.
+            free(GOptr->dataStruct);
+            break;
+        default:
+            // Remaining types: Null, String, Integer, Float, Boolean.
+            // Free memory of the value.
+            free(GOptr->dataStruct);
+            break;
+        }
+    }
+}

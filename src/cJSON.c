@@ -31,7 +31,7 @@ cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
     switch(containerType)
     {
     case Null:
-        genObj.dataStruct = NULL;
+        genObj.dataContainer = NULL;
         return genObj;
     case Dictionary:
         containerSize = sizeof(cJSON_Dict_t);
@@ -54,10 +54,10 @@ cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
     }
 
     // Allocate memory for data container
-    genObj.dataStruct = malloc(containerSize);
+    genObj.dataContainer = malloc(containerSize);
     
     // Set allocated memory to 0
-    if (genObj.dataStruct != NULL) memset(genObj.dataStruct, 0, containerSize);
+    if (genObj.dataContainer != NULL) memset(genObj.dataContainer, 0, containerSize);
     
     return genObj;
 }
@@ -67,7 +67,7 @@ cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
 {
     // Check if object is already deleted.
-    if (GOptr->dataStruct != NULL)
+    if (GOptr->dataContainer != NULL)
     {
         switch(GOptr->type)
         {
@@ -86,7 +86,7 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
             free(AS_DICT_PTR(GOptr)->valueData);
 
             // Free the memory of the data container itself.
-            free(GOptr->dataStruct);
+            free(GOptr->dataContainer);
             break;
         case List:
             for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GOptr)->length; i++)
@@ -96,13 +96,82 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
             }
 
             // Free the memory of the data container itself.
-            free(GOptr->dataStruct);
+            free(GOptr->dataContainer);
             break;
         default:
             // Remaining types: Null, String, Integer, Float, Boolean.
             // Free memory of the value.
-            free(GOptr->dataStruct);
+            free(GOptr->dataContainer);
             break;
         }
     }
+}
+
+cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
+{
+    *dataType = GOptr->type;
+    return cJSON_Ok;
+}
+
+cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t *GOptr, cJSON_Dict_t *dict)
+{
+    if (GOptr->type == Dictionary)
+    {
+        *dict = AS_DICT(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t *GOptr, cJSON_List_t *list)
+{
+    if (GOptr->type == List)
+    {
+        *list = AS_LIST(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t *GOptr, cJSON_String_t *str)
+{
+    if (GOptr->type == String)
+    {
+        if (*str != NULL) free(*str);
+        *str = malloc(strlen(AS_STRING(GOptr)) + 1);
+        strcpy(*str, AS_STRING(GOptr));
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t *GOptr, cJSON_Int_t *intVal)
+{
+    if (GOptr->type == Integer)
+    {
+        *intVal = AS_INT(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t *GOptr, cJSON_Float_t *floatVal)
+{
+    if (GOptr->type == Float)
+    {
+        *floatVal = AS_FLOAT(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
+}
+cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal)
+{
+    if (GOptr->type == Boolean)
+    {
+        *boolVal = AS_BOOL(GOptr);
+        return cJSON_Ok;
+    }
+    
+    return cJSON_Datatype_Error;
 }

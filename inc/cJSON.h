@@ -6,6 +6,9 @@
  * @date 2024-08-10
  */
 
+#ifndef CJSON_DEFINED
+#define CJSON_DEFINED
+
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -330,3 +333,5 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
 cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
 
 #pragma endregion
+
+#endif

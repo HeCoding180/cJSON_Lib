@@ -9,7 +9,10 @@
 
 #include "../inc/cJSON.h"
 
+//   ---   Private Functions   ---
+
 //   ---   Private Function Prototypes   ---
+#pragma region Private Function Prototypes
 
 /**
  * @brief   Function that allocates the required memory for a cJSON_Generic_t object together with its specified data container specified in the containerType parameter.
@@ -18,7 +21,10 @@
  */
 cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType);
 
+#pragma endregion
+
 //   ---   Private Function Implementations   ---
+#pragma region Private Function Implementations
 
 cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
 {
@@ -62,7 +68,14 @@ cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
     return genObj;
 }
 
+#pragma endregion
+
+
+
 //   ---   Public Function Implementations   ---
+
+// - Structure Modification Functions -
+#pragma region Structure Modification Functions
 
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
 {
@@ -107,13 +120,10 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
     }
 }
 
+#pragma endregion
 
-cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
-{
-    *dataType = GOptr->type;
-    return cJSON_Ok;
-}
-
+// - Data Container Getter Functions -
+#pragma region Getter Functions
 
 cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t *GOptr, cJSON_Dict_t *dict)
 {
@@ -178,6 +188,10 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal)
     return cJSON_Datatype_Error;
 }
 
+#pragma endregion
+
+// - Pointer Getter Functions
+#pragma region Pointer Getter Functions
 
 cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t *GOptr, cJSON_Dict_t **dictPtr)
 {
@@ -239,3 +253,16 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
     
     return cJSON_Datatype_Error;
 }
+
+#pragma endregion
+
+// - Analytical Functions
+#pragma region Analytical Functions
+
+cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
+{
+    *dataType = GOptr->type;
+    return cJSON_Ok;
+}
+
+#pragma endregion

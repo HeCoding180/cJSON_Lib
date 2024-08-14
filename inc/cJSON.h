@@ -11,10 +11,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-//   ---   Defines   ---
+//   ---   Constants   ---
+#pragma region Constants
+
+
+
+#pragma endregion
+
 
 
 //   ---   Macros   ---
+
+// - Type Casting Macros -
+#pragma region Type Casting Macros
 
 /**
  * @brief   Returns a pointer of type cJSON_Dict_t, pointing to the dataContainer of obj. Use with care!
@@ -72,9 +81,14 @@
  */
 #define AS_BOOL(obj) (*AS_BOOL_PTR(obj))
 
+#pragma endregion
+
+
+
 //   ---   Typedefs   ---
 
 // Basic Typedefs
+#pragma region Basic Typedefs
 
 /**
  * @brief   Type defining the data type of the "size" value contained in cJSON data container structs.
@@ -106,7 +120,10 @@ typedef float cJSON_Float_t;
  */
 typedef bool cJSON_Bool_t;
 
+#pragma endregion
+
 // Enum Typedefs
+#pragma region Enum Typedefs
 
 /**
  * @brief   cJSON data container structure type.
@@ -132,7 +149,10 @@ typedef enum cJSON_Result
     cJSON_Unknown_Error
 } cJSON_Result_t;
 
+#pragma endregion
+
 // Struct Typedefs
+#pragma region Struct Typedefs
 
 /**
  * @brief   Generic JSON object. Used to link data containers or values to lists or dictionaries they are contained in.
@@ -171,7 +191,14 @@ typedef struct cJSON_Dict
     cJSON_Generic_t *valueData;
 } cJSON_Dict_t;
 
+#pragma endregion
+
+
+
 //   ---   Public Function Prototypes   ---
+
+// - Structure Modification Functions -
+#pragma region Structure Modification Functions
 
 /**
  * @brief   Function that deletes a generic object together with all of its children (recursive).
@@ -180,16 +207,10 @@ typedef struct cJSON_Dict
  */
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr);
 
+#pragma endregion
 
-/**
- * @brief   Function used to get the data type of the data stored in GOptr.
- * 
- * @param   GOptr Pointer to a cJSON_Generic_t object.
- * @param   dataType 
- * @return  cJSON_Result_t 
- */
-cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
-
+// - Getter Functions -
+#pragma region Getter Functions
 
 /**
  * @brief   Function used to try and retrieve the dictionary object stored in GOptr's dataContainer.
@@ -240,6 +261,10 @@ cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t *GOptr, cJSON_Float_t *floatVal
  */
 cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal);
 
+#pragma endregion
+
+// - Pointer Getter Functions
+#pragma region Pointer Getter Functions
 
 /**
  * @brief 
@@ -289,3 +314,19 @@ cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t *GOptr, cJSON_Float_t **floa
  * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a boolean.
  */
 cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolValPtr);
+
+#pragma endregion
+
+// - Analytical Functions
+#pragma region Analytical Functions
+
+/**
+ * @brief   Function used to get the data type of the data stored in GOptr.
+ * 
+ * @param   GOptr Pointer to a cJSON_Generic_t object.
+ * @param   dataType 
+ * @return  cJSON_Result_t 
+ */
+cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
+
+#pragma endregion

@@ -8,71 +8,9 @@
  */
 
 #include "../inc/cJSON.h"
+#include "../inc/cJSON_Util.h"
 
-//   ---   Private Functions   ---
-
-//   ---   Private Function Prototypes   ---
-#pragma region Private Function Prototypes
-
-/**
- * @brief   Function that allocates the required memory for a cJSON_Generic_t object together with its specified data container specified in the containerType parameter.
- * @param   containerType Specifies the type of the object stored in the generic object.
- * @return  Returns the memory address of a newly allocated cJSON_Generic_t already containing the type and pointer to the object of the specified type.
- */
-cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType);
-
-#pragma endregion
-
-//   ---   Private Function Implementations   ---
-#pragma region Private Function Implementations
-
-cJSON_Generic_t cJSON_mallocGenObj(cJSON_DataType_t containerType)
-{
-    cJSON_Generic_t genObj;
-    genObj.type = containerType;
-
-    size_t containerSize;
-
-    // Select container pointer size
-    switch(containerType)
-    {
-    case Null:
-        genObj.dataContainer = NULL;
-        return genObj;
-    case Dictionary:
-        containerSize = sizeof(cJSON_Dict_t);
-        break;
-    case List:
-        containerSize = sizeof(cJSON_List_t);
-        break;
-    case String:
-        containerSize = sizeof(cJSON_String_t);
-        break;
-    case Integer:
-        containerSize = sizeof(cJSON_Int_t);
-        break;
-    case Float:
-        containerSize = sizeof(cJSON_Float_t);
-        break;
-    case Boolean:
-        containerSize = sizeof(cJSON_Bool_t);
-        break;
-    }
-
-    // Allocate memory for data container
-    genObj.dataContainer = malloc(containerSize);
-    
-    // Set allocated memory to 0
-    if (genObj.dataContainer != NULL) memset(genObj.dataContainer, 0, containerSize);
-    
-    return genObj;
-}
-
-#pragma endregion
-
-
-
-//   ---   Public Function Implementations   ---
+//   ---   Function Implementations   ---
 
 // - Structure Modification Functions -
 #pragma region Structure Modification Functions

@@ -35,10 +35,10 @@
 
 /**
  * @brief   Function that deletes a generic object together with all of its children (recursive).
- * @param   GOptr cJSON_Generic_t object that is to be deleted.
+ * @param   GObj cJSON_Generic_t object that is to be deleted.
  * @return  cJSON_Result_t deletion result.
  */
-cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GOptr);
+cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj);
 
 #pragma endregion
 
@@ -46,53 +46,53 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GOptr);
 #pragma region Getter Functions
 
 /**
- * @brief   Function used to try and retrieve the dictionary object stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the dictionary object stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   dict Pointer to a user variable, where the dictionary's contents are to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a dictionary.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a dictionary.
  */
-cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t GOptr, cJSON_Dict_t *dict);
+cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t GObj, cJSON_Dict_t *dict);
 /**
- * @brief   Function used to try and retrieve the list object stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the list object stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   list Pointer to a user variable, where the list's contents are to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a list.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a list.
  */
-cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t GOptr, cJSON_List_t *list);
+cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t GObj, cJSON_List_t *list);
 /**
- * @brief   Function used to try and retrieve the string stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the string stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   str Pointer to a user variable, where the string's contents are to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a string.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a string.
  */
-cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t GOptr, cJSON_String_t *str);
+cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t GObj, cJSON_String_t *str);
 /**
- * @brief   Function used to try and retrieve the integer stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the integer stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   intVal Pointer to a user variable, where the integer value is to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a integer.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a integer.
  */
-cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t GOptr, cJSON_Int_t *intVal);
+cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t GObj, cJSON_Int_t *intVal);
 /**
- * @brief   Function used to try and retrieve the float stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the float stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   floatVal Pointer to a user variable, where the float value is to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a float.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a float.
  */
-cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GOptr, cJSON_Float_t *floatVal);
+cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GObj, cJSON_Float_t *floatVal);
 /**
- * @brief   Function used to try and retrieve the boolean stored in GOptr's dataContainer.
+ * @brief   Function used to try and retrieve the boolean stored in GObj's dataContainer.
  * 
- * @param   GOptr cJSON_Generic_t object.
+ * @param   GObj cJSON_Generic_t object.
  * @param   boolVal Pointer to a user variable, where the boolean value is to be stored.
- * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a boolean.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a boolean.
  */
-cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GOptr, cJSON_Bool_t *boolVal);
+cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal);
 
 #pragma endregion
 
@@ -102,51 +102,51 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GOptr, cJSON_Bool_t *boolVal);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param dictPtr Pointer to a user pointer variable, where the pointer to the dictionary is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a dictionary.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a dictionary.
  */
-cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t GOptr, cJSON_Dict_t **dictPtr);
+cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t GObj, cJSON_Dict_t **dictPtr);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param listPtr Pointer to a user pointer variable, where the pointer to the list is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a list.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a list.
  */
-cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t GOptr, cJSON_List_t **listPtr);
+cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t GObj, cJSON_List_t **listPtr);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param strPtr Pointer to a user pointer variable, where the pointer to the string is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a string.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a string.
  */
-cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t GOptr, cJSON_String_t *strPtr);
+cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t GObj, cJSON_String_t *strPtr);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param intValPtr Pointer to a user pointer variable, where the pointer to the integer is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a integer.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a integer.
  */
-cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t GOptr, cJSON_Int_t **intValPtr);
+cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t GObj, cJSON_Int_t **intValPtr);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param floatValPtr Pointer to a user pointer variable, where the pointer to the float is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a float.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a float.
  */
-cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t GOptr, cJSON_Float_t **floatValPtr);
+cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t GObj, cJSON_Float_t **floatValPtr);
 /**
  * @brief 
  * 
- * @param GOptr cJSON_Generic_t object.
+ * @param GObj cJSON_Generic_t object.
  * @param boolValPtr Pointer to a user pointer variable, where the pointer to the boolean is to be stored.
- * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GOptr's type isn't a boolean.
+ * @return cJSON_Result_t Returns cJSON_Ok by default. Returns cJSON_Datatype_Error if the GObj's type isn't a boolean.
  */
-cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GOptr, cJSON_Bool_t **boolValPtr);
+cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GObj, cJSON_Bool_t **boolValPtr);
 
 #pragma endregion
 
@@ -154,32 +154,32 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GOptr, cJSON_Bool_t **boolVal
 #pragma region Analytical Functions
 
 /**
- * @brief   Function used to get the data type of the data stored in GOptr.
+ * @brief   Function used to get the data type of the data stored in GObj.
  * 
- * @param   GOptr cJSON_Generic_t object.
- * @param   dataType Datatype of the container stored in GOptr
+ * @param   GObj cJSON_Generic_t object.
+ * @param   dataType Datatype of the container stored in GObj
  * @return  cJSON_Result_t Always returns cJSON_Ok.
  */
-cJSON_Result_t cJSON_getType(cJSON_Generic_t GOptr, cJSON_ContainerType_t *dataType);
+cJSON_Result_t cJSON_getType(cJSON_Generic_t GObj, cJSON_ContainerType_t *dataType);
 
 /**
  * @brief   Function used to get the maximum depth relative to startDepth.
  * 
- * @param   GOptr cJSON_Generic_t object.
- * @param   maxDepth Pointer to a variable, where the max depth will be stored in. If maxDepth is equal to the startDepth means that GOptr does not have any child containers like dictionaries and/or lists.
+ * @param   GObj cJSON_Generic_t object.
+ * @param   maxDepth Pointer to a variable, where the max depth will be stored in. If maxDepth is equal to the startDepth means that GObj does not have any child containers like dictionaries and/or lists.
  * @param   startDepth Relative start depth of for example the parent container's depth.
  * @return  cJSON_Result_t Returns the result of the function (Default: cJSON_Ok). Can return cJSON_DepthOutOfRange_Error if the maximum depth is reached.
  */
-cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t GOptr, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth);
+cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t GObj, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth);
 
 /**
- * @brief   Returns the absolute depth of the structure stored in GOptr. This function does not consider parent containers! This function does the same as cJSON_getRelDepth(GOptr, maxDepth, 0).
+ * @brief   Returns the absolute depth of the structure stored in GObj. This function does not consider parent containers! This function does the same as cJSON_getRelDepth(GObj, maxDepth, 0).
  * 
- * @param   GOptr cJSON_Generic_t object.
- * @param   maxDepth Pointer to a variable, where the max depth will be stored in. A maxDepth of 0 means that GOptr does not have any child containers like dictionaries and/or lists.
+ * @param   GObj cJSON_Generic_t object.
+ * @param   maxDepth Pointer to a variable, where the max depth will be stored in. A maxDepth of 0 means that GObj does not have any child containers like dictionaries and/or lists.
  * @return  cJSON_Result_t Returns the result of the function (Default: cJSON_Ok). Can return cJSON_DepthOutOfRange_Error if the maximum depth is reached.
  */
-cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t GOptr, cJSON_depth_t *maxDepth);
+cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t GObj, cJSON_depth_t *maxDepth);
 
 #pragma endregion
 

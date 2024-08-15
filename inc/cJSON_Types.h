@@ -22,57 +22,57 @@
 
 /**
  * @brief   Returns a pointer of type cJSON_Dict_t, pointing to the dataContainer of obj. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_DICT_PTR(obj) ((cJSON_Dict_t*)((obj)->dataContainer))
+#define AS_DICT_PTR(obj) ((cJSON_Dict_t*)((obj).dataContainer))
 /**
  * @brief   Returns the reference of the cJSON_Dict_t object stored in the dataContainer of obj. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @param   obj cJSON_Generic_t.
  */
 #define AS_DICT(obj) (*AS_DICT_PTR(obj))
 /**
  * @brief   Returns a pointer of type cJSON_List_t, pointing to the dataContainer of obj. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_LIST_PTR(obj) ((cJSON_List_t*)((obj)->dataContainer))
+#define AS_LIST_PTR(obj) ((cJSON_List_t*)((obj).dataContainer))
 /**
  * @brief   Returns the reference of the cJSON_List_t object stored in the dataContainer of obj. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @param   obj cJSON_Generic_t.
  */
 #define AS_LIST(obj) (*AS_LIST_PTR(obj))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_String_t. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_String_t. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_STRING(obj) ((cJSON_String_t)((obj)->dataContainer))
+#define AS_STRING(obj) ((cJSON_String_t)((obj).dataContainer))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Int_t pointer. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Int_t pointer. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_INT_PTR(obj) ((cJSON_Int_t*)((obj)->dataContainer))
+#define AS_INT_PTR(obj) ((cJSON_Int_t*)((obj).dataContainer))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Int_t. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Int_t. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
 #define AS_INT(obj) (*AS_INT_PTR(obj))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Float_t pointer. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Float_t pointer. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_FLOAT_PTR(obj) ((cJSON_Float_t*)((obj)->dataContainer))
+#define AS_FLOAT_PTR(obj) ((cJSON_Float_t*)((obj).dataContainer))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Float_t. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Float_t. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
 #define AS_FLOAT(obj) (*AS_FLOAT_PTR(obj))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Bool_t. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Bool_t. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
-#define AS_BOOL_PTR(obj) ((cJSON_Bool_t*)((obj)->dataContainer))
+#define AS_BOOL_PTR(obj) ((cJSON_Bool_t*)((obj).dataContainer))
 /**
- * @brief   Returns obj->dataContainer as a cJSON_Bool_t. Use with care!
- * @param   obj cJSON_Generic_t pointer.
+ * @brief   Returns obj.dataContainer as a cJSON_Bool_t. Use with care!
+ * @param   obj cJSON_Generic_t.
  */
 #define AS_BOOL(obj) (*AS_BOOL_PTR(obj))
 

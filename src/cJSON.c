@@ -15,44 +15,44 @@
 // - Structural Functions -
 #pragma region Structural Functions
 
-cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
+cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj)
 {
     // Check if object is already deleted.
-    if (GOptr->dataContainer != NULL)
+    if (GObj.dataContainer != NULL)
     {
-        switch(GOptr->type)
+        switch(GObj.type)
         {
         case Dictionary:
             // Delete all cJSON_Generic_t objects and free the memory of all key strings stored in this cJSON_Dict_t object.
-            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GOptr)->length; i++)
+            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GObj)->length; i++)
             {
                 // Free the key string pointer (char**) stored at index i.
-                free(AS_DICT_PTR(GOptr)->keyData[i]);
+                free(AS_DICT_PTR(GObj)->keyData[i]);
                 // Delete the cJSON_Generic_t object stored at index i.
-                cJSON_delGenObj(&(AS_DICT_PTR(GOptr)->valueData[i]));
+                cJSON_delGenObj((AS_DICT_PTR(GObj)->valueData[i]));
             }
 
             // Free the memory of the key and value arrays.
-            free(AS_DICT_PTR(GOptr)->keyData);
-            free(AS_DICT_PTR(GOptr)->valueData);
+            free(AS_DICT_PTR(GObj)->keyData);
+            free(AS_DICT_PTR(GObj)->valueData);
 
             // Free the memory of the data container itself.
-            free(GOptr->dataContainer);
+            free(GObj.dataContainer);
             break;
         case List:
-            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GOptr)->length; i++)
+            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GObj)->length; i++)
             {
                 // Delete the cJSON_Generic_t object stored at index i
-                cJSON_delGenObj(&(AS_LIST_PTR(GOptr)->data[i]));
+                cJSON_delGenObj((AS_LIST_PTR(GObj)->data[i]));
             }
 
             // Free the memory of the data container itself.
-            free(GOptr->dataContainer);
+            free(GObj.dataContainer);
             break;
         default:
             // Remaining types: Null, String, Integer, Float, Boolean.
             // Free memory of the value.
-            free(GOptr->dataContainer);
+            free(GObj.dataContainer);
             break;
         }
     }
@@ -63,63 +63,63 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
 // - Data Container Getter Functions -
 #pragma region Getter Functions
 
-cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t *GOptr, cJSON_Dict_t *dict)
+cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t GObj, cJSON_Dict_t *dict)
 {
-    if (GOptr->type == Dictionary)
+    if (GObj.type == Dictionary)
     {
-        *dict = AS_DICT(GOptr);
+        *dict = AS_DICT(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t *GOptr, cJSON_List_t *list)
+cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t GObj, cJSON_List_t *list)
 {
-    if (GOptr->type == List)
+    if (GObj.type == List)
     {
-        *list = AS_LIST(GOptr);
+        *list = AS_LIST(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t *GOptr, cJSON_String_t *str)
+cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t GObj, cJSON_String_t *str)
 {
-    if (GOptr->type == String)
+    if (GObj.type == String)
     {
         if (*str != NULL) free(*str);
-        *str = malloc(strlen(AS_STRING(GOptr)) + 1);
-        strcpy(*str, AS_STRING(GOptr));
+        *str = malloc(strlen(AS_STRING(GObj)) + 1);
+        strcpy(*str, AS_STRING(GObj));
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t *GOptr, cJSON_Int_t *intVal)
+cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t GObj, cJSON_Int_t *intVal)
 {
-    if (GOptr->type == Integer)
+    if (GObj.type == Integer)
     {
-        *intVal = AS_INT(GOptr);
+        *intVal = AS_INT(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t *GOptr, cJSON_Float_t *floatVal)
+cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GObj, cJSON_Float_t *floatVal)
 {
-    if (GOptr->type == Float)
+    if (GObj.type == Float)
     {
-        *floatVal = AS_FLOAT(GOptr);
+        *floatVal = AS_FLOAT(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal)
+cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal)
 {
-    if (GOptr->type == Boolean)
+    if (GObj.type == Boolean)
     {
-        *boolVal = AS_BOOL(GOptr);
+        *boolVal = AS_BOOL(GObj);
         return cJSON_Ok;
     }
     
@@ -131,61 +131,61 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t *GOptr, cJSON_Bool_t *boolVal)
 // - Pointer Getter Functions
 #pragma region Pointer Getter Functions
 
-cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t *GOptr, cJSON_Dict_t **dictPtr)
+cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t GObj, cJSON_Dict_t **dictPtr)
 {
-    if (GOptr->type == Dictionary)
+    if (GObj.type == Dictionary)
     {
-        *dictPtr = AS_DICT_PTR(GOptr);
+        *dictPtr = AS_DICT_PTR(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t *GOptr, cJSON_List_t **listPtr)
+cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t GObj, cJSON_List_t **listPtr)
 {
-    if (GOptr->type == List)
+    if (GObj.type == List)
     {
-        *listPtr = AS_LIST_PTR(GOptr);
+        *listPtr = AS_LIST_PTR(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t *GOptr, cJSON_String_t *strPtr)
+cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t GObj, cJSON_String_t *strPtr)
 {
-    if (GOptr->type == String)
+    if (GObj.type == String)
     {
-        *strPtr = AS_STRING(GOptr);
+        *strPtr = AS_STRING(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t *GOptr, cJSON_Int_t **intValPtr)
+cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t GObj, cJSON_Int_t **intValPtr)
 {
-    if (GOptr->type == Integer)
+    if (GObj.type == Integer)
     {
-        *intValPtr = AS_INT_PTR(GOptr);
+        *intValPtr = AS_INT_PTR(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t *GOptr, cJSON_Float_t **floatValPtr)
+cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t GObj, cJSON_Float_t **floatValPtr)
 {
-    if (GOptr->type == Float)
+    if (GObj.type == Float)
     {
-        *floatValPtr = AS_FLOAT_PTR(GOptr);
+        *floatValPtr = AS_FLOAT_PTR(GObj);
         return cJSON_Ok;
     }
     
     return cJSON_Datatype_Error;
 }
-cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolValPtr)
+cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GObj, cJSON_Bool_t **boolValPtr)
 {
-    if (GOptr->type == Boolean)
+    if (GObj.type == Boolean)
     {
-        *boolValPtr = AS_BOOL_PTR(GOptr);
+        *boolValPtr = AS_BOOL_PTR(GObj);
         return cJSON_Ok;
     }
     
@@ -197,15 +197,15 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
 // - Analytical Functions
 #pragma region Analytical Functions
 
-cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_ContainerType_t *dataType)
+cJSON_Result_t cJSON_getType(cJSON_Generic_t GObj, cJSON_ContainerType_t *dataType)
 {
-    *dataType = GOptr->type;
+    *dataType = GObj.type;
     return cJSON_Ok;
 }
 
-cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth)
+cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t GObj, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth)
 {
-    switch(GOptr->type)
+    switch(GObj.type)
     {
     case List:
         // Check if depth is still in range with this cJSON container
@@ -215,9 +215,9 @@ cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth
             startDepth++;
             *maxDepth = MAX(*maxDepth, startDepth);
 
-            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GOptr)->length; i++)
+            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GObj)->length; i++)
             {
-                cJSON_Result_t relativeResult = cJSON_getRelDepth(&(AS_LIST_PTR(GOptr)->data[i]), maxDepth, startDepth);
+                cJSON_Result_t relativeResult = cJSON_getRelDepth(AS_LIST_PTR(GObj)->data[i], maxDepth, startDepth);
                 if (relativeResult != cJSON_Ok) return relativeResult;
             }
 
@@ -232,9 +232,9 @@ cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth
             startDepth++;
             *maxDepth = MAX(*maxDepth, startDepth);
 
-            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GOptr)->length; i++)
+            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GObj)->length; i++)
             {
-                cJSON_Result_t relativeResult = cJSON_getRelDepth(&(AS_DICT_PTR(GOptr)->valueData[i]), maxDepth, startDepth);
+                cJSON_Result_t relativeResult = cJSON_getRelDepth(AS_DICT_PTR(GObj)->valueData[i], maxDepth, startDepth);
                 if (relativeResult != cJSON_Ok) return relativeResult;
             }
 
@@ -247,9 +247,9 @@ cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth
     }
 }
 
-cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth)
+cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t GObj, cJSON_depth_t *maxDepth)
 {
-    return cJSON_getRelDepth(GOptr, maxDepth, 0);
+    return cJSON_getRelDepth(GObj, maxDepth, 0);
 }
 
 #pragma endregion

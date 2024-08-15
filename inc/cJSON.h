@@ -9,8 +9,6 @@
 #ifndef CJSON_DEFINED
 #define CJSON_DEFINED
 
-#include <stdbool.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "cJSON_Types.h"

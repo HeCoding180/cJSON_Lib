@@ -1,6 +1,6 @@
 /**
  * @file cJSON_Types.h
- * @author your name (you@domain.com)
+ * @author HeCoding180
  * @brief 
  * @version 0.1
  * @date 2024-08-15
@@ -9,6 +9,7 @@
  * 
  */
 
+#include <stdbool.h>
 #include <inttypes.h>
 
 //   ---   Macros   ---

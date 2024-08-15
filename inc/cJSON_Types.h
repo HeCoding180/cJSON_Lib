@@ -135,7 +135,7 @@ typedef enum cJSON_DataType
     Integer,
     Float,
     Boolean
-} cJSON_DataType_t;
+} cJSON_ContainerType_t;
 
 typedef enum cJSON_Result
 {
@@ -158,7 +158,7 @@ typedef enum cJSON_Result
  */
 typedef struct cJSON_Generic
 {
-    cJSON_DataType_t type;
+    cJSON_ContainerType_t type;
     void *dataContainer;
 } cJSON_Generic_t;
 

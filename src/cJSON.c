@@ -197,7 +197,7 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
 // - Analytical Functions
 #pragma region Analytical Functions
 
-cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
+cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_ContainerType_t *dataType)
 {
     *dataType = GOptr->type;
     return cJSON_Ok;

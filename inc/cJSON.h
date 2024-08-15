@@ -33,6 +33,8 @@
 // - Structure Modification Functions -
 #pragma region Structure Modification Functions
 
+
+
 /**
  * @brief   Function that deletes a generic object together with all of its children (recursive).
  * @param   GOptr Pointer to the cJSON_Generic_t object that is to be deleted.
@@ -160,7 +162,7 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
  * @param   dataType Datatype of the container stored in GOptr
  * @return  cJSON_Result_t Always returns cJSON_Ok.
  */
-cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
+cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_ContainerType_t *dataType);
 
 /**
  * @brief   Function used to get the maximum depth relative to startDepth.

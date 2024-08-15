@@ -33,4 +33,4 @@
  * @param   containerType Specifies the type of the object stored in the generic object.
  * @return  Returns the memory address of a newly allocated cJSON_Generic_t already containing the type and pointer to the object of the specified type.
  */
-cJSON_Generic_t mallocGenObj(cJSON_DataType_t containerType);
+cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType);

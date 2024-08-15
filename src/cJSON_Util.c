@@ -11,7 +11,7 @@
 
 //   ---   Function Implementations   ---
 
-cJSON_Generic_t mallocGenObj(cJSON_DataType_t containerType)
+cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType)
 {
     cJSON_Generic_t genObj;
     genObj.type = containerType;

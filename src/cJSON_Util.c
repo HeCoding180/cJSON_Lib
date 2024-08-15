@@ -1,7 +1,7 @@
 /**
  * @file cJSON_Util.c
  * @author HeCoding180
- * @brief 
+ * @brief cJSON library utility source file. Contains function implementations for utility functions that are not needed by the user.
  * @version 0.1
  * @date 2024-08-15
  * 

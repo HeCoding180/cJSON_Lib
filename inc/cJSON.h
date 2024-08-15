@@ -28,8 +28,8 @@
 
 //   ---   Function Prototypes   ---
 
-// - Structure Modification Functions -
-#pragma region Structure Modification Functions
+// - Structural Functions -
+#pragma region Structural Functions
 
 
 

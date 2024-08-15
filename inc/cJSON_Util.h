@@ -1,11 +1,14 @@
 /**
  * @file cJSON_Util.h
  * @author HeCoding180
- * @brief 
+ * @brief cJSON library utility header file. Contains macros, typedefs and function prototypes that are not needed by the user.
  * @version 0.1
  * @date 2024-08-15
  * 
  */
+
+#ifndef CJSON_UTIL_DEFINED
+#define CJSON_UTIL_DEFINED
 
 #include <stdlib.h>
 
@@ -232,3 +235,5 @@ bool TS_IsFull(cJSON_TypeStack_t *TSptr);
 cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType);
 
 #pragma endregion
+
+#endif

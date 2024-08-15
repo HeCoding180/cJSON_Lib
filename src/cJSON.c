@@ -1,7 +1,7 @@
 /**
  * @file cJSON.c
  * @author HeCoding180
- * @brief cJSON library c source file
+ * @brief cJSON library c source file.
  * @version 0.1
  * @date 2024-08-10
  * 
@@ -12,8 +12,8 @@
 
 //   ---   Function Implementations   ---
 
-// - Structure Modification Functions -
-#pragma region Structure Modification Functions
+// - Structural Functions -
+#pragma region Structural Functions
 
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t *GOptr)
 {

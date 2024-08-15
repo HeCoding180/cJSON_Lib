@@ -265,4 +265,53 @@ cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType)
     return cJSON_Ok;
 }
 
+cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth)
+{
+    switch(GOptr->type)
+    {
+    case List:
+        // Check if depth is still in range with this cJSON container
+        if (startDepth < CJSON_MAX_DEPTH)
+        {
+            // Update current depth and maximum depth reached if current depth is higher than max depth.
+            startDepth++;
+            *maxDepth = MAX(*maxDepth, startDepth);
+
+            for (cJSON_object_size_size_t i = 0; i < AS_LIST_PTR(GOptr)->length; i++)
+            {
+                cJSON_Result_t relativeResult = cJSON_getRelDepth(&(AS_LIST_PTR(GOptr)->data[i]), maxDepth, startDepth);
+                if (relativeResult != cJSON_Ok) return relativeResult;
+            }
+
+            return cJSON_Ok;
+        }
+        else return cJSON_DepthOutOfRange_Error;
+    case Dictionary:
+        // Check if depth is still in range with this cJSON container
+        if (startDepth < CJSON_MAX_DEPTH)
+        {
+            // Update current depth and maximum depth reached if current depth is higher than max depth.
+            startDepth++;
+            *maxDepth = MAX(*maxDepth, startDepth);
+
+            for (cJSON_object_size_size_t i = 0; i < AS_DICT_PTR(GOptr)->length; i++)
+            {
+                cJSON_Result_t relativeResult = cJSON_getRelDepth(&(AS_DICT_PTR(GOptr)->valueData[i]), maxDepth, startDepth);
+                if (relativeResult != cJSON_Ok) return relativeResult;
+            }
+
+            return cJSON_Ok;
+        }
+        else return cJSON_DepthOutOfRange_Error;
+    default:
+        *maxDepth = MAX(*maxDepth, startDepth);
+        return cJSON_Ok;
+    }
+}
+
+cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth)
+{
+    return cJSON_getRelDepth(GOptr, maxDepth, 0);
+}
+
 #pragma endregion

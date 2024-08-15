@@ -17,13 +17,30 @@
 //   ---   Constants   ---
 #pragma region Constants
 
-
+/**
+ * @brief   Contains the highest possible depth that is allowed by the specified depth type (cJSON_depth_t)
+ * 
+ */
+#define CJSON_MAX_DEPTH         ((cJSON_depth_t) 0xFFFFFFFFFFFFFFFF)
 
 #pragma endregion
 
 
 
 //   ---   Macros   ---
+
+// - Basic Macros -
+#pragma region Basic Macros
+
+#ifndef MIN
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef MAX
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+
+#pragma endregion
 
 // - Type Casting Macros -
 #pragma region Type Casting Macros
@@ -100,6 +117,12 @@
 typedef uint32_t cJSON_object_size_size_t;
 
 /**
+ * @brief   Type used for variables which measure JSON structure depth.
+ * 
+ */
+typedef uint8_t cJSON_depth_t;
+
+/**
  * @brief   Type defining the data type for string values saved in any cJSON data container structs as well as the array of keys used in dictionaries.
  * 
  */
@@ -148,7 +171,8 @@ typedef enum cJSON_Result
     cJSON_Ok,
     cJSON_Datatype_Error,
     cJSON_Structure_Error,
-    cJSON_Not_Allocated_Error,
+    cJSON_DepthOutOfRange_Error,
+    cJSON_NotAllocated_Error,
     cJSON_Unknown_Error
 } cJSON_Result_t;
 
@@ -327,10 +351,29 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t *GOptr, cJSON_Bool_t **boolVa
  * @brief   Function used to get the data type of the data stored in GOptr.
  * 
  * @param   GOptr Pointer to a cJSON_Generic_t object.
- * @param   dataType 
- * @return  cJSON_Result_t 
+ * @param   dataType Datatype of the container stored in GOptr
+ * @return  cJSON_Result_t Always returns cJSON_Ok.
  */
 cJSON_Result_t cJSON_getType(cJSON_Generic_t *GOptr, cJSON_DataType_t *dataType);
+
+/**
+ * @brief   Function used to get the maximum depth relative to startDepth.
+ * 
+ * @param   GOptr Pointer to a cJSON_Generic_t object.
+ * @param   maxDepth Pointer to a variable, where the max depth will be stored in. If maxDepth is equal to the startDepth means that GOptr does not have any child containers like dictionaries and/or lists.
+ * @param   startDepth Relative start depth of for example the parent container's depth.
+ * @return  cJSON_Result_t Returns the result of the function (Default: cJSON_Ok). Can return cJSON_DepthOutOfRange_Error if the maximum depth is reached.
+ */
+cJSON_Result_t cJSON_getRelDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth, cJSON_depth_t startDepth);
+
+/**
+ * @brief   Returns the absolute depth of the structure stored in GOptr. This function does not consider parent containers! This function does the same as cJSON_getRelDepth(GOptr, maxDepth, 0).
+ * 
+ * @param   GOptr Pointer to a cJSON_Generic_t object.
+ * @param   maxDepth Pointer to a variable, where the max depth will be stored in. A maxDepth of 0 means that GOptr does not have any child containers like dictionaries and/or lists.
+ * @return  cJSON_Result_t Returns the result of the function (Default: cJSON_Ok). Can return cJSON_DepthOutOfRange_Error if the maximum depth is reached.
+ */
+cJSON_Result_t cJSON_getAbsDepth(cJSON_Generic_t *GOptr, cJSON_depth_t *maxDepth);
 
 #pragma endregion
 

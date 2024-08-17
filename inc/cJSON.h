@@ -11,27 +11,12 @@
 
 #include <string.h>
 
-#include "cJSON_Types.h"
-
-//   ---   Constants   ---
-#pragma region Constants
-
-/**
- * @brief   Contains the highest possible depth that is allowed by the specified depth type (cJSON_depth_t)
- * 
- */
-#define CJSON_MAX_DEPTH         ((cJSON_depth_t) 0xFFFFFFFFFFFFFFFF)
-
-#pragma endregion
-
-
+#include "cJSON_Constants.h"
 
 //   ---   Function Prototypes   ---
 
 // - Structural Functions -
 #pragma region Structural Functions
-
-
 
 /**
  * @brief   Function that deletes a generic object together with all of its children (recursive).

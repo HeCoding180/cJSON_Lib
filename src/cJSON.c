@@ -128,7 +128,7 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal)
 
 #pragma endregion
 
-// - Pointer Getter Functions
+// - Pointer Getter Functions -
 #pragma region Pointer Getter Functions
 
 cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t GObj, cJSON_Dict_t **dictPtr)
@@ -194,7 +194,7 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GObj, cJSON_Bool_t **boolValP
 
 #pragma endregion
 
-// - Analytical Functions
+// - Analytical Functions -
 #pragma region Analytical Functions
 
 cJSON_Result_t cJSON_getType(cJSON_Generic_t GObj, cJSON_ContainerType_t *dataType)

@@ -11,8 +11,9 @@
 #define CJSON_UTIL_DEFINED
 
 #include <stdlib.h>
+#include <string.h>
 
-#include "cJSON_Types.h"
+#include "cJSON_Constants.h"
 
 //   ---   Macros   ---
 

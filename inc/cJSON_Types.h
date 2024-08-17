@@ -148,6 +148,7 @@ typedef enum cJSON_Result
     cJSON_Structure_Error,
     cJSON_DepthOutOfRange_Error,
     cJSON_NotAllocated_Error,
+    cJSON_UnknownValueType_Error,
     cJSON_Unknown_Error
 } cJSON_Result_t;
 

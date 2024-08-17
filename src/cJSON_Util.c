@@ -57,3 +57,49 @@ cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType)
 }
 
 #pragma endregion
+
+// - Structural Functions -
+#pragma region Structural Functions
+
+cJSON_Result_t cJSON_appendToDict(cJSON_Dict_t *dictPtr, const cJSON_Key_t key, cJSON_Generic_t valObj)
+{
+    if (dictPtr->length > 0)
+    {
+        dictPtr->keyData = (cJSON_Key_t*)realloc(dictPtr->keyData, (1 + dictPtr->length) * sizeof(cJSON_Key_t));
+        dictPtr->valueData = (cJSON_Generic_t*)realloc(dictPtr->valueData, (1 + dictPtr->length) * sizeof(cJSON_Generic_t));
+    }
+    else
+    {
+        dictPtr->keyData = (cJSON_Key_t*)malloc(sizeof(cJSON_Key_t));
+        dictPtr->valueData = (cJSON_Generic_t*)malloc(sizeof(cJSON_Generic_t));
+    }
+
+    // Allocate memory for key string and store key
+    dictPtr->keyData[dictPtr->length] = (cJSON_Key_t)malloc(1 + strlen(key));
+    strcpy(dictPtr->keyData[dictPtr->length], key);
+
+    // Store value object
+    dictPtr->valueData[dictPtr->length] = valObj;
+
+    // Update length
+    dictPtr->length++;
+}
+cJSON_Result_t cJSON_appendToList(cJSON_List_t *listPtr, cJSON_Generic_t obj)
+{
+    if (listPtr->length > 0)
+    {
+        listPtr->data = (cJSON_Generic_t*)realloc(listPtr->data, (1 + listPtr->length) * sizeof(cJSON_Generic_t));
+    }
+    else
+    {
+        listPtr->data = (cJSON_Generic_t*)malloc(sizeof(cJSON_Generic_t));
+    }
+
+    // Store object in list
+    listPtr->data[listPtr->length] = obj;
+
+    // Update length
+    listPtr->length++;
+}
+
+#pragma endregion

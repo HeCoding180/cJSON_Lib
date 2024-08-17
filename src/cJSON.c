@@ -16,6 +16,29 @@
 // - Structural Functions -
 #pragma region Structural Functions
 
+cJSON_Result_t cJSON_tryAppendToDict(cJSON_Generic_t *GObjPtr, const cJSON_Key_t key, cJSON_Generic_t valObj)
+{
+    if (GObjPtr->type == Dictionary)
+    {
+        return cJSON_appendToDict(AS_DICT_PTR(*GObjPtr), key, valObj);
+    }
+    else
+    {
+        return cJSON_Datatype_Error;
+    }
+}
+cJSON_Result_t cJSON_tryAppendToList(cJSON_Generic_t *GObjPtr, cJSON_Generic_t obj)
+{
+    if (GObjPtr->type == List)
+    {
+        return cJSON_appendToList(AS_LIST_PTR(*GObjPtr), obj);
+    }
+    else
+    {
+        return cJSON_Datatype_Error;
+    }
+}
+
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj)
 {
     // Check if object is already deleted.

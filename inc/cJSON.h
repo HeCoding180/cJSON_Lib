@@ -21,6 +21,24 @@
 #pragma region Structural Functions
 
 /**
+ * @brief   Function used to try and append a generic object to a dictionary in a generic object.
+ * 
+ * @param   GObjPtr 
+ * @param   key Key string.
+ * @param   valObj Value cJSON generic object.
+ * @return  cJSON_Result_t Returns the result of this operation. Can be one of the following: cJSON_Ok, cJSON_Datatype_Error
+ */
+cJSON_Result_t cJSON_tryAppendToDict(cJSON_Generic_t *GObjPtr, const cJSON_Key_t key, cJSON_Generic_t valObj);
+/**
+ * @brief   Function used to try and append a generic object to a list in a generic object.
+ * 
+ * @param   GObjPtr 
+ * @param   obj 
+ * @return  cJSON_Result_t Returns the result of this operation. Can be one of the following: cJSON_Ok, cJSON_Datatype_Error 
+ */
+cJSON_Result_t cJSON_tryAppendToList(cJSON_Generic_t *GObjPtr, cJSON_Generic_t obj);
+
+/**
  * @brief   Function that deletes a generic object together with all of its children (recursive).
  * @param   GObj cJSON_Generic_t object that is to be deleted.
  * @return  cJSON_Result_t deletion result.

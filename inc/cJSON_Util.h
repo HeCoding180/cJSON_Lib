@@ -64,4 +64,27 @@ cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType);
 
 #pragma endregion
 
+// - Structural Functions -
+#pragma region Structural Functions
+
+/**
+ * @brief   Function to append a generic object to a dictionary.
+ * 
+ * @param   dictPtr Pointer to the dictionary the generic object should be added to.
+ * @param   key Key string.
+ * @param   valObj Value cJSON generic object.
+ * @return  cJSON_Result_t 
+ */
+cJSON_Result_t cJSON_appendToDict(cJSON_Dict_t *dictPtr, const cJSON_Key_t key, cJSON_Generic_t valObj);
+/**
+ * @brief   Function to append a generic object to a list.
+ * 
+ * @param   listPtr Pointer to the list the generic object should be added to.
+ * @param   obj 
+ * @return  cJSON_Result_t 
+ */
+cJSON_Result_t cJSON_appendToList(cJSON_List_t *listPtr, cJSON_Generic_t obj);
+
+#pragma endregion
+
 #endif

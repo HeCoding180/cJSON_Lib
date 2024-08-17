@@ -181,7 +181,7 @@ typedef struct cJSON_List
  * @brief   cJSON dictionary key type.
  * 
  */
-typedef cJSON_String_t cJSON_Key;
+typedef cJSON_String_t cJSON_Key_t;
 
 /**
  * @brief   cJSON data container for a dictionary object.
@@ -190,7 +190,7 @@ typedef cJSON_String_t cJSON_Key;
 typedef struct cJSON_Dict
 {
     cJSON_object_size_size_t length;
-    cJSON_Key *keyData;
+    cJSON_Key_t *keyData;
     cJSON_Generic_t *valueData;
 } cJSON_Dict_t;
 

@@ -13,7 +13,6 @@
 
 #include "cJSON_Constants.h"
 #include "cJSON_GenericStack.h"
-#include "cJSON_Parser.h"
 #include "cJSON_Types.h"
 
 //   ---   Function Prototypes   ---
@@ -27,6 +26,20 @@
  * @return  cJSON_Result_t deletion result.
  */
 cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj);
+
+#pragma endregion
+
+// - Parser Function -
+#pragma region Parser Function
+
+/**
+ * @brief   cJSON parser functon. Function used to retrieve and build a cJSON structure from a string (str).
+ * 
+ * @param   GOptr cJSON_Generic pointer, where the parsed structure will be saved in.
+ * @param   str String containing the JSON data.
+ * @return  cJSON_Result_t Returns cJSON_Ok by default. Can return the following errors: cJSON_Structure_Error, cJSON_DepthOutOfRange_Error.
+ */
+cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, char *str);
 
 #pragma endregion
 

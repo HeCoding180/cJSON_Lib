@@ -7,6 +7,9 @@
  * 
  */
 
+#ifndef CJSON_PARSER_UTIL_DEFINED
+#define CJSON_PARSER_UTIL_DEFINED
+
 #include "../inc/cJSON_Constants.h"
 #include "../inc/cJSON_GenericStack.h"
 #include "../inc/cJSON_Types.h"
@@ -71,3 +74,5 @@ static cJSON_Result_t cJSON_Parser_StringBuilder(char **refStrPtr, char **output
 static void SB_DB_AddChar(cJSON_SB_DB_t *SbDb, const char c);
 
 #pragma endregion
+
+#endif

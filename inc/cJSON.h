@@ -12,6 +12,9 @@
 #include <string.h>
 
 #include "cJSON_Constants.h"
+#include "cJSON_GenericStack.h"
+#include "cJSON_Parser.h"
+#include "cJSON_Types.h"
 
 //   ---   Function Prototypes   ---
 

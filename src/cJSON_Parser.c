@@ -10,6 +10,7 @@
 #include "../inc/cJSON_Parser.h"
 
 #include "../inc/cJSON_Constants.h"
+#include "../inc/cJSON_GenericStack.h"
 #include "../inc/cJSON_Util.h"
 
 //   ---   Macros   ---

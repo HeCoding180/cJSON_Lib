@@ -24,7 +24,7 @@
  * @return  false if GenericStack is not empty
  * 
  */
-#define TS_IS_EMPTY(TS) ((TS).isEmpty)
+#define GS_IS_EMPTY(TS) ((TS).isEmpty)
 /**
  * @brief   Macro used to check if a cJSON_GenericStack_t pointer's stack is empty.
  * 
@@ -34,7 +34,7 @@
  * @return  false if GenericStack is not empty
  * 
  */
-#define TS_PTR_IS_EMPTY(TS) ((TS)->isEmpty)
+#define GS_PTR_IS_EMPTY(TS) ((TS)->isEmpty)
 
 /**
  * @brief   Macro used to check if a cJSON_GenericStack_t stack is full.
@@ -45,7 +45,7 @@
  * @return  false if GenericStack is not full
  * 
  */
-#define TS_IS_FULL(TS) ((TS).index == ((TS).stackSize - 1))
+#define GS_IS_FULL(TS) ((TS).index == ((TS).stackSize - 1))
 /**
  * @brief   Macro used to check if a cJSON_GenericStack_t pointer's stack is full.
  * 
@@ -55,7 +55,7 @@
  * @return  false if GenericStack is not full
  * 
  */
-#define TS_PTR_IS_FULL(TS) ((TS)->index == ((TS)->stackSize - 1))
+#define GS_PTR_IS_FULL(TS) ((TS)->index == ((TS)->stackSize - 1))
 
 /**
  * @brief   Unsafe macro used to get the top item from a cJSON_GenericStack_t stack.
@@ -63,14 +63,14 @@
  * @param   TS cJSON_GenericStack_t struct.
  * 
  */
-#define TS_TOP(TS) ((TS).stack[(TS).index])
+#define GS_TOP(TS) ((TS).stack[(TS).index])
 /**
  * @brief   Unsafe macro used to get the top item from a cJSON_GenericStack_t pointer's stack.
  * 
  * @param   TS cJSON_GenericStack_t struct pointer.
  * 
  */
-#define TS_PTR_TOP(TS) ((TS)->stack[(TS)->index])
+#define GS_PTR_TOP(TS) ((TS)->stack[(TS)->index])
 
 #pragma endregion
 
@@ -91,22 +91,22 @@ typedef enum cJSON_GenericStack_Result
      * @brief   Default result.
      * 
      */
-    TS_Ok,
+    GS_Ok,
     /**
-     * @brief   Returned on TS_Push operation of a full stack.
+     * @brief   Returned on GS_Push operation of a full stack.
      * 
      */
-    TS_StackOverflow_Error,
+    GS_StackOverflow_Error,
     /**
-     * @brief   Returned on TS_Pop operation of an empty stack.
+     * @brief   Returned on GS_Pop operation of an empty stack.
      * 
      */
-    TS_StackUnderflow_Error,
+    GS_StackUnderflow_Error,
     /**
-     * @brief   Returned on TS_Top of an empty stack.
+     * @brief   Returned on GS_Top of an empty stack.
      * 
      */
-    TS_StackIsEmpty
+    GS_StackIsEmpty
 } cJSON_GenericStack_Result_t;
 
 #pragma endregion
@@ -157,37 +157,37 @@ typedef struct cJSON_GenericStack
  * @param   stackSize Size of the stack in number of items.
  * @return  cJSON_GenericStack_t Struct with allocated stack memory.
  */
-cJSON_GenericStack_t TS_Create(cJSON_depth_t stackSize);
+cJSON_GenericStack_t GS_Create(cJSON_depth_t stackSize);
 /**
  * @brief   Resets and frees stack memory of a cJSON_GenericStack_t struct. Needs to be used on discarding of the struct to avoid memory leaks.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
  */
-void TS_Delete(cJSON_GenericStack_t *TSptr);
+void GS_Delete(cJSON_GenericStack_t *TSptr);
 
 /**
  * @brief   Used to push a cJSON_ContainerType_t value to the stack.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
  * @param   type cJSON_ContainerType_t type that is to be pushed to the stack.
- * @return  cJSON_GenericStack_Result_t Returns TS_Ok by default. Returns TS_StackOverflow_Error if stack was already full before the push operation (type not pushed to stack).
+ * @return  cJSON_GenericStack_Result_t Returns GS_Ok by default. Returns GS_StackOverflow_Error if stack was already full before the push operation (type not pushed to stack).
  */
-cJSON_GenericStack_Result_t TS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type);
+cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type);
 /**
  * @brief   Used to remove the top item from the stack.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
- * @return  cJSON_GenericStack_Result_t Returns TS_Ok by default. Returns TS_StackUnderflow_Error if stack was already empty before the pop operation (nothing changed).
+ * @return  cJSON_GenericStack_Result_t Returns GS_Ok by default. Returns GS_StackUnderflow_Error if stack was already empty before the pop operation (nothing changed).
  */
-cJSON_GenericStack_Result_t TS_Pop(cJSON_GenericStack_t *TSptr);
+cJSON_GenericStack_Result_t GS_Pop(cJSON_GenericStack_t *TSptr);
 /**
  * @brief   Used to retreive the top value from the stack.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
  * @param   type Pointer to a cJSON_ContainerType_t variable, the stack's top type is to be stored in.
- * @return  cJSON_ContainerType_t Returns TS_Ok by default. Returns TS_StackIsEmpty if stack is empty (type pointer's contents are left untouched).
+ * @return  cJSON_ContainerType_t Returns GS_Ok by default. Returns GS_StackIsEmpty if stack is empty (type pointer's contents are left untouched).
  */
-cJSON_GenericStack_Result_t TS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type);
+cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type);
 /**
  * @brief   Function used to check if stack is empty.
  * 
@@ -195,7 +195,7 @@ cJSON_GenericStack_Result_t TS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerT
  * @return  true if stack is empty.
  * @return  false if stack is not empty.
  */
-bool TS_IsEmpty(cJSON_GenericStack_t *TSptr);
+bool GS_IsEmpty(cJSON_GenericStack_t *TSptr);
 /**
  * @brief   Used to check if stack is full.
  * 
@@ -203,6 +203,6 @@ bool TS_IsEmpty(cJSON_GenericStack_t *TSptr);
  * @return  true if stack is full.
  * @return  false if stack is not full.
  */
-bool TS_IsFull(cJSON_GenericStack_t *TSptr);
+bool GS_IsFull(cJSON_GenericStack_t *TSptr);
 
 #pragma endregion

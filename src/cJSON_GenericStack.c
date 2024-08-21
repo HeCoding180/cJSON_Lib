@@ -14,7 +14,7 @@
 // - GenericStack Function Implementations -
 #pragma region GenericStack Functions
 
-cJSON_GenericStack_t TS_Create(cJSON_depth_t stackSize)
+cJSON_GenericStack_t GS_Create(cJSON_depth_t stackSize)
 {
     cJSON_GenericStack_t tempTS;
 
@@ -26,7 +26,7 @@ cJSON_GenericStack_t TS_Create(cJSON_depth_t stackSize)
 
     return tempTS;
 }
-void TS_Delete(cJSON_GenericStack_t *TSptr)
+void GS_Delete(cJSON_GenericStack_t *TSptr)
 {
     // Free stack memory
     free(TSptr->stack);
@@ -37,10 +37,10 @@ void TS_Delete(cJSON_GenericStack_t *TSptr)
     TSptr->isEmpty = true;
 }
 
-cJSON_GenericStack_Result_t TS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type)
+cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type)
 {
-    if (TS_PTR_IS_FULL(TSptr)) return TS_StackOverflow_Error;
-    else if (TS_PTR_IS_EMPTY(TSptr))
+    if (GS_PTR_IS_FULL(TSptr)) return GS_StackOverflow_Error;
+    else if (GS_PTR_IS_EMPTY(TSptr))
     {
         // Push to empty stack
         TSptr->isEmpty = false;
@@ -52,11 +52,11 @@ cJSON_GenericStack_Result_t TS_Push(cJSON_GenericStack_t *TSptr, cJSON_Container
         TSptr->stack[++TSptr->index] = type;
     }
 
-    return TS_Ok;
+    return GS_Ok;
 }
-cJSON_GenericStack_Result_t TS_Pop(cJSON_GenericStack_t *TSptr)
+cJSON_GenericStack_Result_t GS_Pop(cJSON_GenericStack_t *TSptr)
 {
-    if (TSptr->isEmpty) return TS_StackUnderflow_Error;
+    if (TSptr->isEmpty) return GS_StackUnderflow_Error;
     else if (TSptr->index == 0)
     {
         TSptr->isEmpty = true;
@@ -66,24 +66,24 @@ cJSON_GenericStack_Result_t TS_Pop(cJSON_GenericStack_t *TSptr)
         TSptr->index--;
     }
 
-    return TS_Ok;
+    return GS_Ok;
 }
-cJSON_GenericStack_Result_t TS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type)
+cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type)
 {
-    if (TSptr->isEmpty) return TS_StackIsEmpty;
+    if (TSptr->isEmpty) return GS_StackIsEmpty;
     else
     {
-        *type = TS_PTR_TOP(TSptr);
-        return TS_Ok;
+        *type = GS_PTR_TOP(TSptr);
+        return GS_Ok;
     }
 }
-bool TS_IsEmpty(cJSON_GenericStack_t *TSptr)
+bool GS_IsEmpty(cJSON_GenericStack_t *TSptr)
 {
-    return TS_PTR_IS_EMPTY(TSptr);
+    return GS_PTR_IS_EMPTY(TSptr);
 }
-bool TS_IsFull(cJSON_GenericStack_t *TSptr)
+bool GS_IsFull(cJSON_GenericStack_t *TSptr)
 {
-    return TS_PTR_IS_FULL(TSptr);
+    return GS_PTR_IS_FULL(TSptr);
 }
 
 #pragma endregion

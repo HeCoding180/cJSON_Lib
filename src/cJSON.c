@@ -92,29 +92,44 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
     // Check if GObjPtr is allocated. If so delete old data structure
     if (GObjPtr->dataContainer != NULL) cJSON_delGenObj(*GObjPtr);
 
+    // Create object stack
+    cJSON_GenericStack_t ObjectStack = GS_Create(CJSON_MAX_DEPTH);
     
 
-    enum valueEnironmentType
+    /*enum valueEnironmentType
     {
         None,
         StringValue,
         NumericValue
-    } valEnvType;
+    } valEnvType;*/
+
+    bool ObjectIsEmpty = true;
 
     // Loop through string's contents
     while (*str)
     {
-        if (0)
+        if (ObjectIsEmpty)
         {
+            if (*str == '{')        *GObjPtr = mallocGenObj(Dictionary);
+            else if (*str == '[')   *GObjPtr = mallocGenObj(List);
+            else
+            {
+                // Skip invalid characters
+                str++;
+                continue;
+            }
 
+            GS_Push(&ObjectStack, *GObjPtr);
+            ObjectIsEmpty = false;
         }
         else
         {
             switch (*str)
             {
             case ' ':   // Ignore space character
+            case '\t':  // Ignore tab character
             case '\n':  // Ignore newline character
-                continue;
+                break;
             case '{':
                 // Start dictionary
                 break;
@@ -134,12 +149,18 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
             case ',':
                 // Next item
                 break;
+            default:
+                // Unexpected character
+                return cJSON_Structure_Error;
             }
         }
 
         // Handle next character
         str++;
     }
+
+    // Delete object stack
+    GS_Delete(&ObjectStack);
 }
 
 #pragma endregion

@@ -89,9 +89,6 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj)
 
 cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
 {
-    // Check if GObjPtr is allocated. If so delete old data structure
-    if (GObjPtr->dataContainer != NULL) cJSON_delGenObj(*GObjPtr);
-
     // Create object stack
     cJSON_GenericStack_t ObjectStack = GS_Create(CJSON_MAX_DEPTH);
     

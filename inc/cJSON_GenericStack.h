@@ -126,7 +126,7 @@ typedef struct cJSON_GenericStack
      */
     cJSON_depth_t stackSize;
     /**
-     * @brief   Index of the topmost cJSON_ContainerType_t of the stack. Is zero for both cases of the stack containing one and zero items!
+     * @brief   Index of the topmost cJSON_Generic_t of the stack. Is zero for both cases of the stack containing one and zero items!
      * 
      */
     cJSON_depth_t index;
@@ -136,10 +136,10 @@ typedef struct cJSON_GenericStack
      */
     bool isEmpty;
     /**
-     * @brief   Pointer to a cJSON_ContainerType_t array.
+     * @brief   Pointer to a cJSON_Generic_t array.
      * 
      */
-    cJSON_ContainerType_t *stack;
+    cJSON_Generic_t *stack;
 } cJSON_GenericStack_t;
 
 #pragma endregion
@@ -166,13 +166,13 @@ cJSON_GenericStack_t GS_Create(cJSON_depth_t stackSize);
 void GS_Delete(cJSON_GenericStack_t *TSptr);
 
 /**
- * @brief   Used to push a cJSON_ContainerType_t value to the stack.
+ * @brief   Used to push a cJSON_Generic_t value to the stack.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
- * @param   type cJSON_ContainerType_t type that is to be pushed to the stack.
+ * @param   type cJSON_Generic_t type that is to be pushed to the stack.
  * @return  cJSON_GenericStack_Result_t Returns GS_Ok by default. Returns GS_StackOverflow_Error if stack was already full before the push operation (type not pushed to stack).
  */
-cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type);
+cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_Generic_t type);
 /**
  * @brief   Used to remove the top item from the stack.
  * 
@@ -184,10 +184,10 @@ cJSON_GenericStack_Result_t GS_Pop(cJSON_GenericStack_t *TSptr);
  * @brief   Used to retreive the top value from the stack.
  * 
  * @param   TSptr Pointer to a cJSON_GenericStack_t struct.
- * @param   type Pointer to a cJSON_ContainerType_t variable, the stack's top type is to be stored in.
- * @return  cJSON_ContainerType_t Returns GS_Ok by default. Returns GS_StackIsEmpty if stack is empty (type pointer's contents are left untouched).
+ * @param   type Pointer to a cJSON_Generic_t variable, the stack's top type is to be stored in.
+ * @return  cJSON_Generic_t Returns GS_Ok by default. Returns GS_StackIsEmpty if stack is empty (type pointer's contents are left untouched).
  */
-cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type);
+cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_Generic_t *type);
 /**
  * @brief   Function used to check if stack is empty.
  * 

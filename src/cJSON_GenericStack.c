@@ -22,7 +22,7 @@ cJSON_GenericStack_t GS_Create(cJSON_depth_t stackSize)
     tempTS.stackSize = stackSize;
     tempTS.index = 0;
     tempTS.isEmpty = true;
-    tempTS.stack = (cJSON_ContainerType_t*)malloc(stackSize * sizeof(cJSON_ContainerType_t));
+    tempTS.stack = (cJSON_Generic_t*)malloc(stackSize * sizeof(cJSON_Generic_t));
 
     return tempTS;
 }
@@ -37,7 +37,7 @@ void GS_Delete(cJSON_GenericStack_t *TSptr)
     TSptr->isEmpty = true;
 }
 
-cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t type)
+cJSON_GenericStack_Result_t GS_Push(cJSON_GenericStack_t *TSptr, cJSON_Generic_t type)
 {
     if (GS_PTR_IS_FULL(TSptr)) return GS_StackOverflow_Error;
     else if (GS_PTR_IS_EMPTY(TSptr))
@@ -68,7 +68,7 @@ cJSON_GenericStack_Result_t GS_Pop(cJSON_GenericStack_t *TSptr)
 
     return GS_Ok;
 }
-cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_ContainerType_t *type)
+cJSON_GenericStack_Result_t GS_Top(cJSON_GenericStack_t *TSptr, cJSON_Generic_t *type)
 {
     if (TSptr->isEmpty) return GS_StackIsEmpty;
     else

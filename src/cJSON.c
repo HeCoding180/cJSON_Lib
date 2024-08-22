@@ -117,7 +117,7 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
             }
             else
             {
-                // Skip invalid characters
+                // Skip leading characters
                 str++;
                 continue;
             }
@@ -132,14 +132,44 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
             case '\t':  // Ignore tab character
             case '\n':  // Ignore newline character
                 break;
-            case '{':
-                // Start dictionary
+            case '{':;
+                // Start dictionary, allocate generic dictionary object
+                cJSON_Generic_t dictObj;
+                dictObj = mallocGenObj(Dictionary);
+
+                // Check if start dictionary is possible
+                if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, dictObj);
+                }
+                else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), dictObj);
+                }
+                else
+                {
+                    // Dictionary at invalid location in structure, delete object stack, delete generic dictionary object and return error
+                    GS_Delete(&ObjectStack);
+                    cJSON_delGenObj(dictObj);
+                    return cJSON_Structure_Error;
+                }
+
+                // Push dictionary object to stack, check if JSON structure is within depth range
+                if (GS_Push(&ObjectStack, dictObj) != GS_Ok)
+                {
+                    // String's JSON structure depth is out of range, delete object stack and return error
+                    GS_Delete(&ObjectStack);
+                    return cJSON_DepthOutOfRange_Error;
+                }
+
+                // Update flags
+                pFlags = CJP_DICT_END_POSSIBLE | CJP_DICT_KEY_POSSIBLE;
                 break;
             case '}':
                 // Check if end dictionary is possible
                 if (pFlags & CJP_DICT_END_POSSIBLE)
                 {
-                    // End dictionary
+                    // End dictionary, remove generic dictionary object from stack
                     GS_Pop(&ObjectStack);
 
                     if (GS_IS_EMPTY(ObjectStack))
@@ -147,27 +177,60 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                         // Clear parser flags, stack is empty, parsing complete, wait for string terminator
                         pFlags = 0;
                     }
+                    else if (GS_TOP(ObjectStack).type == Dictionary)
+                    {
+                        pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                    }
                     else
                     {
-                        if (GS_TOP(ObjectStack).type == Dictionary)
-                        {
-                            pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
-                        }
-                        else
-                        {
-                            pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
-                        }
+                        pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
                     }
                 }
+                else
+                {
+                    // Dictionary end at invalid location, delete object stack and return error
+                    GS_Delete(&ObjectStack);
+                    return cJSON_Structure_Error;
+                }
                 break;
-            case '[':
-                // Start list
+            case '[':;
+                // Start list, allocate generic list object
+                cJSON_Generic_t listObj;
+                listObj = mallocGenObj(List);
+
+                // Check if start list is possible
+                if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, listObj);
+                }
+                else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), listObj);
+                }
+                else
+                {
+                    // List at invalid location in structure, delete object stack, delete generic list object and return error
+                    GS_Delete(&ObjectStack);
+                    cJSON_delGenObj(listObj);
+                    return cJSON_Structure_Error;
+                }
+
+                // Push list object to stack, check if JSON structure is within depth range
+                if (GS_Push(&ObjectStack, listObj) != GS_Ok)
+                {
+                    // JSON structure depth is out of range, delete object stack and return error
+                    GS_Delete(&ObjectStack);
+                    return cJSON_DepthOutOfRange_Error;
+                }
+
+                // Update flags
+                pFlags = CJP_DICT_END_POSSIBLE | CJP_DICT_KEY_POSSIBLE;
                 break;
             case ']':
                 // Check if end list is possible
                 if (pFlags & CJP_DICT_END_POSSIBLE)
                 {
-                    // End list
+                    // End list, remove generic list object from stack
                     GS_Pop(&ObjectStack);
 
                     if (GS_IS_EMPTY(ObjectStack))
@@ -175,16 +238,13 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                         // Clear parser flags, stack is empty, parsing complete, wait for string terminator
                         pFlags = 0;
                     }
+                    else if (GS_TOP(ObjectStack).type == Dictionary)
+                    {
+                        pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                    }
                     else
                     {
-                        if (GS_TOP(ObjectStack).type == Dictionary)
-                        {
-                            pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
-                        }
-                        else
-                        {
-                            pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
-                        }
+                        pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
                     }
                 }
                 break;
@@ -200,7 +260,8 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 }
                 else
                 {
-                    // Item separator at illegal location detected
+                    // Item separator at invalid location detected, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return cJSON_Structure_Error;
                 }
                 break;
@@ -213,7 +274,8 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 }
                 else
                 {
-                    // Dictionary key-value separator at illegal location detected
+                    // Dictionary key-value separator at invalid location detected, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return cJSON_Structure_Error;
                 }
                 break;
@@ -252,12 +314,18 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 }
                 else
                 {
+                    // String at invalid location detected, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return cJSON_Structure_Error;
                 }
 
                 // Check if StringBuilder was successful
                 if (strBuilderResult != cJSON_Ok)
+                {
+                    // StringBuilder exited unsuccessfully, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return strBuilderResult;
+                }
                 break;
             case '-':
             case '0':
@@ -286,13 +354,67 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 }
                 else
                 {
-                    // Number at invalid location in structure
+                    // Number at invalid location in structure, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return cJSON_Structure_Error;
                 }
                 break;
-            case 't':
-            case 'f':
+            case 't':;
+            case 'f':;
                 // Check if boolean is possible
+                bool boolVal;
+                cJSON_Generic_t boolObj;
+
+                if ((LOWER_CASE_CHAR(*str) == 't')
+                 && (LOWER_CASE_CHAR(*(str + 1)) == 'r')
+                 && (LOWER_CASE_CHAR(*(str + 2)) == 'u')
+                 && (LOWER_CASE_CHAR(*(str + 3)) == 'e'))
+                {
+                    // Bool value is "true", skip "true" character sequence, store result
+                    str += 3;
+                    boolVal = true;
+                }
+                else if ((LOWER_CASE_CHAR(*str) == 'f')
+                      && (LOWER_CASE_CHAR(*(str + 1)) == 'a')
+                      && (LOWER_CASE_CHAR(*(str + 2)) == 'l')
+                      && (LOWER_CASE_CHAR(*(str + 3)) == 's')
+                      && (LOWER_CASE_CHAR(*(str + 4)) == 'e'))
+                {
+                    // Bool value is "false", skip "false" character sequence, store result
+                    str += 4;
+                    boolVal = false;
+                }
+                else
+                {
+                    // Invalid character sequence, delete object stack and return error
+                    GS_Delete(&ObjectStack);
+                    return cJSON_InvalidCharacterSequence_Error;
+                }
+
+                // Create generic object from boolean
+                boolObj = mallocGenObj(Boolean);
+                AS_BOOL(boolObj) = boolVal;
+
+                // Valid character sequence
+                if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, boolObj);
+
+                    pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), boolObj);
+
+                    pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else
+                {
+                    // Boolean at invalid location in structure, delete object stack, delete generic bool object and return error
+                    GS_Delete(&ObjectStack);
+                    cJSON_delGenObj(boolObj);
+                    return cJSON_Structure_Error;
+                }
                 break;
             case 'n':
                 // Extract null, check if whole string matches
@@ -317,18 +439,21 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                     }
                     else
                     {
-                        // Null at invalid location in structure
+                        // Null at invalid location in structure, delete object stack and return error
+                        GS_Delete(&ObjectStack);
                         return cJSON_Structure_Error;
                     }
                 }
                 else
                 {
-                    // Invalid character sequence
+                    // Invalid character sequence, delete object stack and return error
+                    GS_Delete(&ObjectStack);
                     return cJSON_InvalidCharacterSequence_Error;
                 }
                 break;
             default:
-                // Unknown structural character
+                // Unknown character at current location detected, delete object stack and return error
+                GS_Delete(&ObjectStack);
                 return cJSON_Structure_Error;
             }
         }

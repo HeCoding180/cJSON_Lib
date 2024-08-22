@@ -1,0 +1,53 @@
+{
+	"null_value": null,
+	"empty_string": "",
+	"zero_integer": 0,
+	"negative_integer": -42,
+	"large_integer": 1234567890123456789,
+	"decimal_number": 3.14159,
+	"negative_decimal_number": -2.71828,
+	"empty_array": [],
+	"single_element_array": ["single_value"],
+	"nested_array": [[[[[]]]]],
+	"array_with_mixed_types": [42, "string", true, null, {"key": "value"}],
+	"empty_object": {},
+	"simple_object": {
+		"key": "value"
+	},
+	"nested_object": {
+		"level1": {
+			"level2": {
+				"level3": "deep_value"
+			}
+		}
+	},
+	"object_with_array_values": {
+		"numbers": [1, 2, 3],
+		"strings": ["one", "two", "three"]
+	},
+	"boolean_true": true,
+	"boolean_false": false,
+	"unicode_characters": "こんにちは",
+	"long_string": "This is a very long string that might be used to test buffer or memory limits in certain systems...",
+	"special_characters_string": "!@#$%^&*()_+-=[]{}|;:',.<>?/~`",
+	"complex_structure": {
+		"array_of_objects": [
+			{"id": 1, "name": "Alice"},
+			{"id": 2, "name": "Bob"}
+		],
+		"object_with_null": {
+			"name": null,
+			"age": 30
+		},
+		"boolean_array": [true, false, true, true],
+		"nested_mixed_structure": {
+			"array_in_object": {
+				"deep_array": [{"key": "value"}, [1, 2, 3], true]
+			},
+			"object_in_array": [
+				{"inner_key": "inner_value"},
+				[false, "test"]
+			]
+		}
+	}
+}

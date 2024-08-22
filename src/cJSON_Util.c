@@ -24,7 +24,7 @@ cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType)
     // Select container pointer size
     switch(containerType)
     {
-    case Null:
+    case NullType:
         genObj.dataContainer = NULL;
         return genObj;
     case Dictionary:
@@ -34,8 +34,8 @@ cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType)
         containerSize = sizeof(cJSON_List_t);
         break;
     case String:
-        containerSize = sizeof(cJSON_String_t);
-        break;
+        // Return object, no memory needs to be allocated, since a string is a pointer of itself and can be stored in the generic object on its own
+        return genObj;
     case Integer:
         containerSize = sizeof(cJSON_Int_t);
         break;
@@ -61,7 +61,7 @@ cJSON_Generic_t mallocGenObj(cJSON_ContainerType_t containerType)
 // - Structural Functions -
 #pragma region Structural Functions
 
-cJSON_Result_t cJSON_appendToDict(cJSON_Dict_t *dictPtr, const cJSON_Key_t key, cJSON_Generic_t valObj)
+void cJSON_appendToDict(cJSON_Dict_t *dictPtr, const cJSON_Key_t key, cJSON_Generic_t valObj)
 {
     if (dictPtr->length > 0)
     {
@@ -84,7 +84,7 @@ cJSON_Result_t cJSON_appendToDict(cJSON_Dict_t *dictPtr, const cJSON_Key_t key, 
     // Update length
     dictPtr->length++;
 }
-cJSON_Result_t cJSON_appendToList(cJSON_List_t *listPtr, cJSON_Generic_t obj)
+void cJSON_appendToList(cJSON_List_t *listPtr, cJSON_Generic_t obj)
 {
     if (listPtr->length > 0)
     {

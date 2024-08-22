@@ -20,7 +20,8 @@ cJSON_Result_t cJSON_tryAppendToDict(cJSON_Generic_t *GObjPtr, const cJSON_Key_t
 {
     if (GObjPtr->type == Dictionary)
     {
-        return cJSON_appendToDict(AS_DICT_PTR(*GObjPtr), key, valObj);
+        cJSON_appendToDict(AS_DICT_PTR(*GObjPtr), key, valObj);
+        return cJSON_Ok;
     }
     else
     {
@@ -31,7 +32,8 @@ cJSON_Result_t cJSON_tryAppendToList(cJSON_Generic_t *GObjPtr, cJSON_Generic_t o
 {
     if (GObjPtr->type == List)
     {
-        return cJSON_appendToList(AS_LIST_PTR(*GObjPtr), obj);
+        cJSON_appendToList(AS_LIST_PTR(*GObjPtr), obj);
+        return cJSON_Ok;
     }
     else
     {
@@ -91,24 +93,28 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
 {
     // Create object stack
     cJSON_GenericStack_t ObjectStack = GS_Create(CJSON_MAX_DEPTH);
-    
 
-    /*enum valueEnironmentType
-    {
-        None,
-        StringValue,
-        NumericValue
-    } valEnvType;*/
+    // Temporary storage
+    // Active dictionary key temporary storage
+    cJSON_Key_t activeKey;
 
-    bool ObjectIsEmpty = true;
+    uint8_t pFlags = 0;
 
     // Loop through string's contents
     while (*str)
     {
-        if (ObjectIsEmpty)
+        if (GS_IS_EMPTY(ObjectStack))
         {
-            if (*str == '{')        *GObjPtr = mallocGenObj(Dictionary);
-            else if (*str == '[')   *GObjPtr = mallocGenObj(List);
+            if (*str == '{')
+            {
+                *GObjPtr = mallocGenObj(Dictionary);
+                pFlags = CJP_DICT_END_POSSIBLE | CJP_DICT_KEY_POSSIBLE;
+            }
+            else if (*str == '[')
+            {
+                *GObjPtr = mallocGenObj(List);
+                pFlags = CJP_LIST_END_POSSIBLE | CJP_LIST_VALUE_POSSIBLE;
+            }
             else
             {
                 // Skip invalid characters
@@ -117,11 +123,10 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
             }
 
             GS_Push(&ObjectStack, *GObjPtr);
-            ObjectIsEmpty = false;
         }
         else
         {
-            switch (*str)
+            switch (LOWER_CASE_CHAR(*str))
             {
             case ' ':   // Ignore space character
             case '\t':  // Ignore tab character
@@ -131,23 +136,199 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 // Start dictionary
                 break;
             case '}':
-                // End dictionary
+                // Check if end dictionary is possible
+                if (pFlags & CJP_DICT_END_POSSIBLE)
+                {
+                    // End dictionary
+                    GS_Pop(&ObjectStack);
+
+                    if (GS_IS_EMPTY(ObjectStack))
+                    {
+                        // Clear parser flags, stack is empty, parsing complete, wait for string terminator
+                        pFlags = 0;
+                    }
+                    else
+                    {
+                        if (GS_TOP(ObjectStack).type == Dictionary)
+                        {
+                            pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                        }
+                        else
+                        {
+                            pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                        }
+                    }
+                }
                 break;
             case '[':
                 // Start list
                 break;
             case ']':
-                // End list
-                break;
-            case '"':
-                break;
-            case ':':
+                // Check if end list is possible
+                if (pFlags & CJP_DICT_END_POSSIBLE)
+                {
+                    // End list
+                    GS_Pop(&ObjectStack);
+
+                    if (GS_IS_EMPTY(ObjectStack))
+                    {
+                        // Clear parser flags, stack is empty, parsing complete, wait for string terminator
+                        pFlags = 0;
+                    }
+                    else
+                    {
+                        if (GS_TOP(ObjectStack).type == Dictionary)
+                        {
+                            pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                        }
+                        else
+                        {
+                            pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                        }
+                    }
+                }
                 break;
             case ',':
-                // Next item
+                // Item separator, check if allowed
+                if (pFlags & CJP_ITEM_SEPT_POSSIBLE)
+                {
+                    // Item separator allowed, update flags
+                    if (GS_TOP(ObjectStack).type == Dictionary)
+                        pFlags = CJP_DICT_KEY_POSSIBLE;
+                    else
+                        pFlags = CJP_LIST_VALUE_POSSIBLE;
+                }
+                else
+                {
+                    // Item separator at illegal location detected
+                    return cJSON_Structure_Error;
+                }
+                break;
+            case ':':
+                // Dictionary key-value separator, check if allowed
+                if (pFlags & CJP_DICT_SEPT_POSSIBLE)
+                {
+                    // Update parser flags
+                    pFlags = CJP_DICT_VALUE_POSSIBLE;
+                }
+                else
+                {
+                    // Dictionary key-value separator at illegal location detected
+                    return cJSON_Structure_Error;
+                }
+                break;
+            case '"':;
+                // Start of string sequence
+                cJSON_Result_t strBuilderResult;
+                cJSON_Generic_t genericStrObj;
+
+                // Check if string is possible
+                if (pFlags & CJP_DICT_KEY_POSSIBLE)
+                {
+                    // String is a dictionary key, extract key string to activeKey variable
+                    strBuilderResult = cJSON_Parser_StringBuilder(&str, &activeKey);
+                    
+                    pFlags = CJP_DICT_SEPT_POSSIBLE;
+                }
+                else if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                {
+                    // String is a dictionary value, extract string to generic object's data container
+                    genericStrObj = mallocGenObj(String);
+                    strBuilderResult = cJSON_Parser_StringBuilder(&str, (char**)(&(genericStrObj.dataContainer)));
+
+                    cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, genericStrObj);
+
+                    pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                {
+                    // String is a dictionary value, extract string to generic object's data container
+                    genericStrObj = mallocGenObj(String);
+                    strBuilderResult = cJSON_Parser_StringBuilder(&str, (char**)(&(genericStrObj.dataContainer)));
+
+                    cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), genericStrObj);
+
+                    pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else
+                {
+                    return cJSON_Structure_Error;
+                }
+
+                // Check if StringBuilder was successful
+                if (strBuilderResult != cJSON_Ok)
+                    return strBuilderResult;
+                break;
+            case '-':
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                // Check if number is possible
+                if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                {
+                    cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, cJSON_Parser_NumParser(&str));
+
+                    pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                {
+                    // Top item in stack is a list, add null to list
+                    cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), cJSON_Parser_NumParser(&str));
+
+                    pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                }
+                else
+                {
+                    // Number at invalid location in structure
+                    return cJSON_Structure_Error;
+                }
+                break;
+            case 't':
+            case 'f':
+                // Check if boolean is possible
+                break;
+            case 'n':
+                // Extract null, check if whole string matches
+                if ((LOWER_CASE_CHAR(*(str + 1)) == 'u') && (LOWER_CASE_CHAR(*(str + 2)) == 'l') && (LOWER_CASE_CHAR(*(str + 3)) == 'l'))
+                {
+                    // Skip null characters (3 + 1 at end of the while loop) (yes, 3 is correct)
+                    str += 3;
+
+                    if (pFlags & CJP_DICT_VALUE_POSSIBLE)
+                    {
+                        // Top item is a dictionary, add null to dictionary
+                        cJSON_appendToDict(AS_DICT_PTR(GS_TOP(ObjectStack)), activeKey, mallocGenObj(NullType));
+
+                        pFlags = CJP_DICT_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                    }
+                    else if (pFlags & CJP_LIST_VALUE_POSSIBLE)
+                    {
+                        // Top item in stack is a list, add null to list
+                        cJSON_appendToList(AS_LIST_PTR(GS_TOP(ObjectStack)), mallocGenObj(NullType));
+
+                        pFlags = CJP_LIST_END_POSSIBLE | CJP_ITEM_SEPT_POSSIBLE;
+                    }
+                    else
+                    {
+                        // Null at invalid location in structure
+                        return cJSON_Structure_Error;
+                    }
+                }
+                else
+                {
+                    // Invalid character sequence
+                    return cJSON_InvalidCharacterSequence_Error;
+                }
                 break;
             default:
-                // Unexpected character
+                // Unknown structural character
                 return cJSON_Structure_Error;
             }
         }
@@ -158,6 +339,8 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
 
     // Delete object stack
     GS_Delete(&ObjectStack);
+
+    return cJSON_Ok;
 }
 
 #pragma endregion

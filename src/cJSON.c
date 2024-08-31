@@ -4,7 +4,7 @@
  * @brief cJSON library c source file.
  * @version 0.1
  * @date 2024-08-10
- * 
+ *
  */
 
 #include "../inc/cJSON.h"
@@ -289,7 +289,7 @@ cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str)
                 {
                     // String is a dictionary key, extract key string to activeKey variable
                     strBuilderResult = cJSON_Parser_StringBuilder(&str, &activeKey);
-                    
+
                     pFlags = CJP_DICT_SEPT_POSSIBLE;
                 }
                 else if (pFlags & CJP_DICT_VALUE_POSSIBLE)
@@ -480,7 +480,7 @@ cJSON_Result_t cJSON_tryGetDict(cJSON_Generic_t GObj, cJSON_Dict_t *dict)
         *dict = AS_DICT(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t GObj, cJSON_List_t *list)
@@ -490,7 +490,7 @@ cJSON_Result_t cJSON_tryGetList(cJSON_Generic_t GObj, cJSON_List_t *list)
         *list = AS_LIST(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t GObj, cJSON_String_t *str)
@@ -502,7 +502,7 @@ cJSON_Result_t cJSON_tryGetString(cJSON_Generic_t GObj, cJSON_String_t *str)
         strcpy(*str, AS_STRING(GObj));
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t GObj, cJSON_Int_t *intVal)
@@ -512,7 +512,7 @@ cJSON_Result_t cJSON_tryGetInt(cJSON_Generic_t GObj, cJSON_Int_t *intVal)
         *intVal = AS_INT(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GObj, cJSON_Float_t *floatVal)
@@ -522,7 +522,7 @@ cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GObj, cJSON_Float_t *floatVal)
         *floatVal = AS_FLOAT(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal)
@@ -532,7 +532,7 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal)
         *boolVal = AS_BOOL(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 
@@ -548,7 +548,7 @@ cJSON_Result_t cJSON_tryGetDictPtr(cJSON_Generic_t GObj, cJSON_Dict_t **dictPtr)
         *dictPtr = AS_DICT_PTR(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t GObj, cJSON_List_t **listPtr)
@@ -558,7 +558,7 @@ cJSON_Result_t cJSON_tryGetListPtr(cJSON_Generic_t GObj, cJSON_List_t **listPtr)
         *listPtr = AS_LIST_PTR(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t GObj, cJSON_String_t *strPtr)
@@ -568,7 +568,7 @@ cJSON_Result_t cJSON_tryGetStringPtr(cJSON_Generic_t GObj, cJSON_String_t *strPt
         *strPtr = AS_STRING(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t GObj, cJSON_Int_t **intValPtr)
@@ -578,7 +578,7 @@ cJSON_Result_t cJSON_tryGetIntPtr(cJSON_Generic_t GObj, cJSON_Int_t **intValPtr)
         *intValPtr = AS_INT_PTR(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t GObj, cJSON_Float_t **floatValPtr)
@@ -588,7 +588,7 @@ cJSON_Result_t cJSON_tryGetFloatPtr(cJSON_Generic_t GObj, cJSON_Float_t **floatV
         *floatValPtr = AS_FLOAT_PTR(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GObj, cJSON_Bool_t **boolValPtr)
@@ -598,7 +598,7 @@ cJSON_Result_t cJSON_tryGetBoolPtr(cJSON_Generic_t GObj, cJSON_Bool_t **boolValP
         *boolValPtr = AS_BOOL_PTR(GObj);
         return cJSON_Ok;
     }
-    
+
     return cJSON_Datatype_Error;
 }
 

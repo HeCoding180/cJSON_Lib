@@ -20,8 +20,12 @@ cJSON_Result_t cJSON_Parser_StringBuilder(char **refStrPtr, char **outputStrPtr)
 
     bool inEscapeSequence = false;
 
+    int strBuilderCharNo = 0;
+
+    char currentRefChar = *(*refStrPtr);
+
     // Loop through refStrPtr characters
-    while (*(*refStrPtr++))
+    while (*((*refStrPtr)++))
     {
         if (inEscapeSequence)
         {
@@ -95,7 +99,7 @@ cJSON_Result_t cJSON_Parser_StringBuilder(char **refStrPtr, char **outputStrPtr)
             }
 
             // Write buffer pointer containing formatted extracted string to output string pointer
-            outputStrPtr = outBuf.buffer;
+            *outputStrPtr = outBuf.buffer;
 
             return cJSON_Ok;
         }
@@ -149,7 +153,7 @@ cJSON_Generic_t cJSON_Parser_NumParser(char **refStrPtr)
 
     while (numIncomplete)
     {
-        switch (LOWER_CASE_CHAR(*(*refStrPtr + numStrLen++)))
+        switch (LOWER_CASE_CHAR(*(*refStrPtr + numStrLen)))
         {
         case '.':
         case 'e':
@@ -165,6 +169,7 @@ cJSON_Generic_t cJSON_Parser_NumParser(char **refStrPtr)
         case '7':
         case '8':
         case '9':
+            numStrLen++;
             break;
         default:
             numIncomplete = false;

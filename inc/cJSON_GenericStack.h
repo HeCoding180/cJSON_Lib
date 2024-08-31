@@ -7,6 +7,8 @@
  * 
  */
 
+#ifndef CJSON_TYPESTACK_DEFINED
+#define CJSON_TYPESTACK_DEFINED
 
 #include "cJSON_Types.h"
 
@@ -115,7 +117,7 @@ typedef enum cJSON_GenericStack_Result
 #pragma region Struct Typedefs
 
 /**
- * @brief   cJSON_GenericStack_t is a struct for a stack used for 
+ * @brief   cJSON_GenericStack_t is a struct for a stack used for interations with the JSON data structure.
  * 
  */
 typedef struct cJSON_GenericStack
@@ -206,3 +208,5 @@ bool GS_IsEmpty(cJSON_GenericStack_t *TSptr);
 bool GS_IsFull(cJSON_GenericStack_t *TSptr);
 
 #pragma endregion
+
+#endif // CJSON_TYPESTACK_DEFINED

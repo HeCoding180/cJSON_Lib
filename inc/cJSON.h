@@ -57,7 +57,7 @@ cJSON_Result_t cJSON_delGenObj(cJSON_Generic_t GObj);
  * @param   str String containing the JSON data.
  * @return  cJSON_Result_t Returns cJSON_Ok by default. Can return one of the following errors: cJSON_DepthOutOfRange_Error, cJSON_Structure_Error, cJSON_InvalidCharacterSequence_Error.
  */
-cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, char *str);
+cJSON_Result_t cJSON_parseStr(cJSON_Generic_t *GObjPtr, const char *str);
 
 #pragma endregion
 

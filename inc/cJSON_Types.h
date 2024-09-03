@@ -152,6 +152,12 @@ typedef enum cJSON_Result
     cJSON_Unknown_Error
 } cJSON_Result_t;
 
+typedef enum cJSON_QueryType
+{
+    Dictionary,
+    List
+} cJSON_QueryType_t;
+
 #pragma endregion
 
 // Struct Typedefs
@@ -193,6 +199,18 @@ typedef struct cJSON_Dict
     cJSON_Key_t *keyData;
     cJSON_Generic_t *valueData;
 } cJSON_Dict_t;
+
+typedef struct cJSON_Request
+{
+    cJSON_QueryType_t type;
+    char *index;
+} cJSON_Request_t;
+
+typedef struct cJSON_Query
+{
+    cJSON_depth_t size;
+    cJSON_Request_t *query;
+} cJSON_Query_t;
 
 #pragma endregion
 

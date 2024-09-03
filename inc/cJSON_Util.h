@@ -2,7 +2,7 @@
  * @file cJSON_Util.h
  * @author HeCoding180
  * @brief cJSON library utility header file. Contains macros, typedefs and function prototypes that are not needed by the user.
- * @version 0.1
+ * @version 0.1.0
  * @date 2024-08-15
  * 
  */

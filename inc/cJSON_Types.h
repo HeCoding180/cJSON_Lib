@@ -2,10 +2,8 @@
  * @file cJSON_Types.h
  * @author HeCoding180
  * @brief cJSON library types header file. Contains macros and typedefs for types that are needed everywhere (base library cJSON.h/.c, cJSON_Util.h/.c as well as user header and source files).
- * @version 0.1
+ * @version 0.1.0
  * @date 2024-08-15
- * 
- * @copyright Copyright (c) 2024
  * 
  */
 

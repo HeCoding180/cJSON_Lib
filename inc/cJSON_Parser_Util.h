@@ -2,7 +2,7 @@
  * @file cJSON_Parser_Util.h
  * @author HeCoding180
  * @brief cJSON library parser utility header
- * @version 0.1
+ * @version 0.1.0
  * @date 2024-08-17
  * 
  */
@@ -52,27 +52,6 @@
 
 
 
-//   ---   Typedefs   ---
-
-// - StringBuilder Typedefs -
-#pragma region StringBuilder Typedefs
-
-/**
- * @brief   Two stage buffer used by the parser's StringBuilder. Used to minimize the use of memory reallocations (realloc).
- * 
- */
-typedef struct cJSON_StringBuilder_DoubleBuffer
-{
-    char *buffer;
-    size_t bufferSize;
-    char preBuffer[CJSON_PARSE_STRING_PB_SIZE];
-    uint8_t preBufferSize;
-} cJSON_SB_DB_t;
-
-#pragma endregion
-
-
-
 //   ---   Function Prototypes   ---
 
 // - StringBuilder Functon Prototypes -
@@ -86,14 +65,6 @@ typedef struct cJSON_StringBuilder_DoubleBuffer
  * @return  char* Returns 
  */
 cJSON_Result_t cJSON_Parser_StringBuilder(char **refStrPtr, char **outputStrPtr);
-
-/**
- * @brief   Function used to add a character to a double buffer.
- * 
- * @param   SbDb StringBuilder DoubleBuffer pointer of the buffer the char is to be added to.
- * @param   c Character that is to be added to the buffer
- */
-static void SB_DB_AddChar(cJSON_SB_DB_t *SbDb, const char c);
 
 #pragma endregion
 

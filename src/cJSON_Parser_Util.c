@@ -2,7 +2,7 @@
  * @file cJSON_Parser_Util.c
  * @author HeCoding180
  * @brief cJSON library parser utility source file
- * @version 0.1
+ * @version 0.1.0
  * @date 2024-08-17
  * 
  */

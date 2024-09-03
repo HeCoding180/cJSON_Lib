@@ -2,7 +2,7 @@
  * @file cJSON_GenericStack.c
  * @author HeCoding180
  * @brief cJSON library GenericStack source file.
- * @version 0.1
+ * @version 0.1.0
  * @date 2024-08-17
  * 
  */

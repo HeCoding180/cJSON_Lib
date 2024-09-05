@@ -144,7 +144,9 @@ typedef enum cJSON_Result
     cJSON_Ok,
     cJSON_Datatype_Error,
     cJSON_DepthOutOfRange_Error,
+    cJSON_IndexOutOfRange_Error,
     cJSON_InvalidCharacterSequence_Error,
+    cJSON_InvalidKey_Error,
     cJSON_NotAllocated_Error,
     cJSON_Structure_Error,
     cJSON_Unknown_Error

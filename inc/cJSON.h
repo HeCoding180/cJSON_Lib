@@ -113,6 +113,43 @@ cJSON_Result_t cJSON_tryGetFloat(cJSON_Generic_t GObj, cJSON_Float_t *floatVal);
  */
 cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal);
 
+/**
+ * @brief   Function used to check if a dictionary contains a certain key.
+ * 
+ * @param   GObj Generic object that is to be checked.
+ * @param   key Key that needs to be found.
+ * @return  cJSON_object_size_size_t is the index of the object with the specified key. Is -1 if key could not be found.
+ */
+cJSON_object_size_size_t cJSON_tryGetIndexOfKey(cJSON_Generic_t GObj, cJSON_String_t key);
+
+/**
+ * @brief   This function is used to try and get the generic object located at a specific key in a dictionary container.
+ * 
+ * @param   GObj Base generic object from which the generic object is to be extracted.
+ * @param   key Key of the object that is to be extracted.
+ * @param   outObj Generic object located at the the specified key. Is a null object if any fault occurrs.
+ * @return  cJSON_Result_t is cJSON_Ok by default. Can return cJSON_Datatype_Error or cJSON_InvalidKey_Error.
+ */
+cJSON_Result_t cJSON_tryGetAtKey(cJSON_Generic_t GObj, cJSON_String_t key, cJSON_Generic_t *outObj);
+/**
+ * @brief   This function is used to try and get the generic object that is located at a specific index in a list container.
+ * 
+ * @param   GObj Base generic object from which the generic object is to be extracted.
+ * @param   index Index of the object that is to be extracted.
+ * @param   outObj Generic object located at the the specified key. Is a null object if any fault occurrs.
+ * @return  cJSON_Result_t is cJSON_Ok by default. Can return cJSON_Datatype_Error or cJSON_IndexOutOfRange_Error.
+ */
+cJSON_Result_t cJSON_tryGetAtIndex(cJSON_Generic_t GObj, cJSON_object_size_size_t index, cJSON_Generic_t *outObj);
+/**
+ * @brief   This function is used to try and get the generic object that is located at the location specified using a query.
+ * 
+ * @param   GObj Base generic object where the search query is apllied.
+ * @param   query Search query
+ * @param   outObj Generic object located at the the search query. Is a null object if any fault occurrs.
+ * @return  cJSON_Result_t is cJSON_Ok by default. Can return cJSON_Datatype_Error, cJSON_InvalidKey_Error or cJSON_IndexOutOfRange_Error.
+ */
+cJSON_Result_t cJSON_tryGetFromQuery(cJSON_Generic_t GObj, cJSON_Query_t query, cJSON_Generic_t *outObj);
+
 #pragma endregion
 
 // - Pointer Getter Functions

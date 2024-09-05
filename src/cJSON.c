@@ -536,6 +536,77 @@ cJSON_Result_t cJSON_tryGetBool(cJSON_Generic_t GObj, cJSON_Bool_t *boolVal)
     return cJSON_Datatype_Error;
 }
 
+cJSON_object_size_size_t cJSON_tryGetIndexOfKey(cJSON_Generic_t GObj, cJSON_String_t key)
+{
+    if (GObj.type == Dictionary)
+    {
+        for (cJSON_object_size_size_t i = 0; i < AS_DICT(GObj).length; i++)
+        {
+            if (!strcmp(AS_DICT(GObj).keyData[i], key))
+            {
+                return i;
+            }
+        }
+
+        // Key not found
+        return -1;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+cJSON_Result_t cJSON_tryGetAtKey(cJSON_Generic_t GObj, cJSON_String_t key, cJSON_Generic_t *outObj)
+{
+    if (GObj.type == Dictionary)
+    {
+        for (cJSON_object_size_size_t i = 0; i < AS_DICT(GObj).length; i++)
+        {
+            if (!strcmp(AS_DICT(GObj).keyData[i], key))
+            {
+                *outObj = AS_DICT(GObj).valueData[i];
+
+                return cJSON_Ok;
+            }
+        }
+
+        return cJSON_InvalidKey_Error;
+    }
+    else
+    {
+        return cJSON_Datatype_Error;
+    }
+}
+cJSON_Result_t cJSON_tryGetAtIndex(cJSON_Generic_t GObj, cJSON_object_size_size_t index, cJSON_Generic_t *outObj)
+{
+    if (GObj.type == List)
+    {
+        if (index < AS_LIST(GObj).length)
+        {
+            *outObj = AS_LIST(GObj).data[index];
+
+            return cJSON_Ok;
+        }
+        else
+        {
+            return cJSON_IndexOutOfRange_Error;
+        }
+    }
+    else
+    {
+        outObj->type = NullType;
+        outObj->dataContainer = NULL;
+
+        return cJSON_Datatype_Error;
+    }
+}
+cJSON_Result_t cJSON_tryGetFromQuery(cJSON_Generic_t GObj, cJSON_Query_t query, cJSON_Generic_t *outObj)
+{
+    // Not implemented
+    return cJSON_Unknown_Error;
+}
+
 #pragma endregion
 
 // - Pointer Getter Functions -

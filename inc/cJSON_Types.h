@@ -87,7 +87,7 @@
  * @brief   Type defining the data type of the "size" value contained in cJSON data container structs.
  * 
  */
-typedef uint32_t cJSON_object_size_size_t;
+typedef int32_t cJSON_object_size_size_t;
 
 /**
  * @brief   Type used for variables which measure JSON structure depth.
@@ -154,7 +154,7 @@ typedef enum cJSON_Result
 
 typedef enum cJSON_QueryType
 {
-    Dictionary,
+    Dictionary = 1,
     List
 } cJSON_QueryType_t;
 
